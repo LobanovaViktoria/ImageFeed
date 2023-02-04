@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
@@ -23,19 +23,14 @@ class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let photosName = UIImage(named: photosName[indexPath.row]) else {
             return print("Невозможно получить картинку с таким именем")
         }
         
         cell.imageCell.image = photosName
         cell.dateCell.text = dateFormatter.string(from: Date())
-        
-        if indexPath.row % 2 == 0 {
-            cell.likeOrDislakeButton.imageView?.image = UIImage(named: "yesActive")
-        } else {
-            cell.likeOrDislakeButton.imageView?.image = UIImage(named: "noActive")
-        }
+        cell.likeOrDislakeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "yesActive" : "noActive")
     }
 }
 
