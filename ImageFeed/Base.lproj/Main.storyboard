@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0n2-0o-bvz">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -90,13 +90,14 @@
                             <constraint firstAttribute="trailing" secondItem="pIs-yH-CVm" secondAttribute="trailing" id="g3e-YT-l1t"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="1SS-g6-ejV"/>
                     <connections>
                         <outlet property="tableView" destination="pIs-yH-CVm" id="MaD-W2-43O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-981" y="-470"/>
+            <point key="canvasLocation" x="-11.450381679389313" y="-882.3943661971831"/>
         </scene>
         <!--Profile-->
         <scene sceneID="fNc-fb-A10">
@@ -161,6 +162,7 @@
                             <constraint firstItem="sqI-Np-aIK" firstAttribute="trailing" secondItem="7M6-NC-TxE" secondAttribute="trailing" id="y30-VX-bTu"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="7SA-7l-QES"/>
                     <navigationItem key="navigationItem" title="Navigation Item" id="2k7-kX-yQr"/>
                     <connections>
                         <outlet property="logOutButton" destination="w1T-IE-veN" id="LqJ-Al-ZWb"/>
@@ -172,14 +174,65 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="whx-fG-RbV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="142.74809160305344" y="-454.22535211267609"/>
+            <point key="canvasLocation" x="-937" y="-196"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Izs-Cc-0xd">
+            <objects>
+                <tabBarController id="0n2-0o-bvz" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="T7j-8I-yp8">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="ypBlack"/>
+                        <color key="selectedImageTintColor" name="ypWhite"/>
+                        <tabBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="ypBlack"/>
+                        </tabBarAppearance>
+                    </tabBar>
+                    <connections>
+                        <segue destination="STJ-c9-QDT" kind="relationship" relationship="viewControllers" id="VcV-ee-2mO"/>
+                        <segue destination="6Jf-cs-nL7" kind="relationship" relationship="viewControllers" id="avy-mk-jbi"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MDO-9j-OzK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1850" y="-487"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Lki-jG-X6p">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="STJ-c9-QDT" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="a2B-X0-P6X"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TI4-YL-zB1">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" name="ypWhite"/>
+                        <color key="barTintColor" name="ypWhite"/>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="ypBlack"/>
+                        </navigationBarAppearance>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="k7H-dD-mLp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1jA-U3-Fd1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-938.16793893129773" y="-882.3943661971831"/>
         </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="Photo" width="70" height="70"/>
         <image name="logOut" width="20" height="22"/>
+        <image name="tab_editorial_active" width="20" height="22"/>
+        <image name="tab_profile_active" width="24" height="24"/>
         <image name="yesActive" width="29" height="26"/>
+        <namedColor name="ypBlack">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ypGray">
             <color red="0.68199998140335083" green="0.68599998950958252" blue="0.70599997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
