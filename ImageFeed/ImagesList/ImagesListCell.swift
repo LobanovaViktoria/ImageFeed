@@ -8,8 +8,8 @@ import UIKit
 
 final class ImagesListCell: UITableViewCell {
     
-    @IBOutlet weak var imageCell: UIImageView!
-    @IBOutlet weak var dateCell: UILabel!
-    @IBOutlet weak var likeOrDislakeButton: UIButton!
+    @IBOutlet var imageCell: UIImageView!
+    @IBOutlet var dateCell: UILabel!
+    @IBOutlet var likeOrDislakeButton: UIButton!
     static let reuseIdentifier = "ImagesListCell"
 }

@@ -93,6 +93,7 @@
                     <navigationItem key="navigationItem" id="1SS-g6-ejV"/>
                     <connections>
                         <outlet property="tableView" destination="pIs-yH-CVm" id="MaD-W2-43O"/>
+                        <segue destination="yLy-bD-Y9L" kind="show" identifier="ShowSingleImage" id="YfK-CO-ora"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -221,6 +222,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1jA-U3-Fd1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-938.16793893129773" y="-882.3943661971831"/>
+        </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="NXy-OU-1Gp">
+            <objects>
+                <viewController id="yLy-bD-Y9L" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iG4-Ce-wgE">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="5R2-Op-0EV">
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="STk-XM-83J"/>
+                        <color key="backgroundColor" name="ypBlack"/>
+                        <constraints>
+                            <constraint firstItem="STk-XM-83J" firstAttribute="trailing" secondItem="5R2-Op-0EV" secondAttribute="trailing" id="6z7-K9-8CO"/>
+                            <constraint firstItem="5R2-Op-0EV" firstAttribute="leading" secondItem="STk-XM-83J" secondAttribute="leading" id="feO-Am-fUu"/>
+                            <constraint firstItem="5R2-Op-0EV" firstAttribute="top" secondItem="STk-XM-83J" secondAttribute="top" id="mzI-7E-2Lb"/>
+                            <constraint firstItem="STk-XM-83J" firstAttribute="bottom" secondItem="5R2-Op-0EV" secondAttribute="bottom" id="xsS-Ij-z4c"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="03x-2B-kKp"/>
+                    <connections>
+                        <outlet property="imageView" destination="5R2-Op-0EV" id="0Gl-M7-HLI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7YG-q8-Bwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="740" y="-882"/>
         </scene>
     </scenes>
     <resources>
