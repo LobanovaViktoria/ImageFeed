@@ -22,7 +22,6 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-       // imageView.image = image
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -43,7 +42,11 @@ final class ImagesListViewController: UIViewController {
         
         cell.imageCell.image = photosName
         cell.dateCell.text = dateFormatter.string(from: Date())
-        cell.likeOrDislakeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "yesActive" : "noActive")
+        
+        let isLiked = indexPath.row % 2 == 0
+        let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "YesActive")
+        cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
+//        cell.likeOrDislakeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "noActive" : "yesActive")
     }
 }
 

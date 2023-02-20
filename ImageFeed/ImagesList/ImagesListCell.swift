@@ -12,4 +12,6 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var dateCell: UILabel!
     @IBOutlet var likeOrDislakeButton: UIButton!
     static let reuseIdentifier = "ImagesListCell"
+    
+
 }
