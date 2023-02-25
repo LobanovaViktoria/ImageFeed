@@ -46,7 +46,6 @@ final class ImagesListViewController: UIViewController {
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "YesActive")
         cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
-//        cell.likeOrDislakeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "noActive" : "yesActive")
     }
 }
 
