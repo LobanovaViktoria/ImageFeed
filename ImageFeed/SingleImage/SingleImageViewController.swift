@@ -23,7 +23,7 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         imageView.image = image
         scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
+        scrollView.maximumZoomScale = 7.25
         rescaleAndCenterImageInScrollView(image: image)
     }
     
@@ -41,8 +41,6 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
-        guard let image = imageView.image else { return }
-        
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         view.layoutIfNeeded()
