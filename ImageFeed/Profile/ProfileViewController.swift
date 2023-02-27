@@ -20,7 +20,7 @@ final class ProfileViewController: UIViewController {
         let label = UILabel()
         label.text = "Екатерина Новикова"
         label.textColor = .ypWhite
-        label.font = .systemFont(ofSize: 23)
+        label.font = .boldSystemFont(ofSize: 23)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -75,21 +75,25 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupLayout() {
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        
-        userName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
-        userName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        
-        userLogin.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 8).isActive = true
-        userLogin.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        
-        userStatus.topAnchor.constraint(equalTo: userLogin.bottomAnchor, constant: 8).isActive = true
-        userStatus.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        
-        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26).isActive = true
-        logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalToConstant: 70),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            
+            userName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            userName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            userLogin.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 8),
+            userLogin.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            userStatus.topAnchor.constraint(equalTo: userLogin.bottomAnchor, constant: 8),
+            userStatus.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            
+            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26),
+            logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+            ])
     }
 }
+        
