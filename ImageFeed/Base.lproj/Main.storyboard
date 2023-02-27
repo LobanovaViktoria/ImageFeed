@@ -121,7 +121,6 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Izs-Cc-0xd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MDO-9j-OzK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarController id="0n2-0o-bvz" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="T7j-8I-yp8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -137,6 +136,7 @@
                         <segue destination="6Jf-cs-nL7" kind="relationship" relationship="viewControllers" id="VaK-SU-0Tb"/>
                     </connections>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MDO-9j-OzK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1850" y="-487"/>
         </scene>
@@ -169,6 +169,10 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yHB-a3-lEX">
                                 <rect key="frame" x="171.66666666666666" y="732" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="SZr-ME-y2R"/>
+                                    <constraint firstAttribute="width" constant="50" id="WYY-sz-6Pq"/>
+                                </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="sharing"/>
                                 <connections>
@@ -220,7 +224,7 @@
         <image name="tab_profile_active" width="24" height="24"/>
         <image name="yesActive" width="29" height="26"/>
         <namedColor name="ypBlack">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ypWhite">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
