@@ -6,11 +6,12 @@
 //
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<21).map{ "\($0)" }
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -23,6 +24,18 @@ class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier {
+            let viewController = segue.destination as? SingleImageViewController
+            let indexPath = sender as? IndexPath
+            guard let index = indexPath?.row else { return }
+            let image = UIImage(named: photosName[index])
+            viewController?.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+    
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let photosName = UIImage(named: photosName[indexPath.row]) else {
             return print("Невозможно получить картинку с таким именем")
@@ -31,11 +44,9 @@ class ImagesListViewController: UIViewController {
         cell.imageCell.image = photosName
         cell.dateCell.text = dateFormatter.string(from: Date())
         
-        if indexPath.row % 2 == 0 {
-            cell.likeOrDislakeButton.imageView?.image = UIImage(named: "yesActive")
-        } else {
-            cell.likeOrDislakeButton.imageView?.image = UIImage(named: "noActive")
-        }
+        let isLiked = indexPath.row % 2 == 0
+        let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "YesActive")
+        cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
     }
 }
 
@@ -44,6 +55,7 @@ extension ImagesListViewController: UITableViewDelegate {
     // Метод отвечает за действия, которые будут выполнены при тапе по ячейке таблицы
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
     // Метод, который вычисляет высоту ячейки
