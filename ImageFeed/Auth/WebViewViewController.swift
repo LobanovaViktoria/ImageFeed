@@ -23,10 +23,6 @@ final class WebViewViewController: UIViewController {
     
     @IBOutlet private var webView: WKWebView!
     
-    @IBAction private func didTapBackButton(_ sender: Any?) {
-        print("Press button")
-    }
-    
     weak var delegate: WebViewViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -36,7 +32,10 @@ final class WebViewViewController: UIViewController {
         
         loadWebView()
     }
-    // webView.navigationDelegate = self
+    
+    @IBAction private func didTapBackButton(_ sender: Any?) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
 }
     private extension WebViewViewController {
         func loadWebView() {
@@ -53,11 +52,23 @@ final class WebViewViewController: UIViewController {
             }
         }
         
-        func fetchCode(from url: URL?) -> String? {
-            if let url = url,
+//        func fetchCode(from url: URL?) -> String? {
+//            if let url = url,
+//            let components = URLComponents(string: url.absoluteString),
+//               components.path == APIConstants.authorizathionPath,
+//               let codeItem = components.queryItems?.first(where: { $0.name == APIConstants.code }) {
+//                return codeItem.value
+//            } else {
+//                return nil
+//            }
+//        }
+        
+        func fetchCode(from navigationAction: WKNavigationAction) -> String? {
+            if let url = navigationAction.request.url,
             let components = URLComponents(string: url.absoluteString),
                components.path == APIConstants.authorizathionPath,
-               let codeItem = components.queryItems?.first(where: { $0.name == APIConstants.code }) {
+               let items = components.queryItems,
+               let codeItem = items.first(where: { $0.name == APIConstants.code }) {
                 return codeItem.value
             } else {
                 return nil
@@ -69,7 +80,7 @@ extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
        // print("ITS LIT", navigationAction.request.url)
        
-        if let code = fetchCode(from: navigationAction.request.url) {
+        if let code = fetchCode(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
@@ -78,4 +89,7 @@ extension WebViewViewController: WKNavigationDelegate {
     }
 }
 
+
+    
+   
 
