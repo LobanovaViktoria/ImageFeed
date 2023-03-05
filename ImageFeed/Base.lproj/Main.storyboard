@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="k6l-jZ-muW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G3E-dT-q4h">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -233,7 +233,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Izs-Cc-0xd">
             <objects>
-                <tabBarController id="0n2-0o-bvz" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="0n2-0o-bvz" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="T7j-8I-yp8">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -350,16 +350,20 @@
                             <constraint firstItem="l8l-j0-UmW" firstAttribute="centerX" secondItem="y62-zX-5u1" secondAttribute="centerX" id="cEZ-CS-J00"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="k6l-jZ-muW" kind="presentation" identifier="ShowAuthenticationScreenSegueIdentifier" modalPresentationStyle="overFullScreen" id="IPD-jJ-fDc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AR9-ZA-SHW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1497" y="-1530"/>
+            <point key="canvasLocation" x="-1398" y="-1551"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Cp2-vD-EQt">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="k6l-jZ-muW" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="UIA-9m-BqZ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bKi-ji-OsE">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

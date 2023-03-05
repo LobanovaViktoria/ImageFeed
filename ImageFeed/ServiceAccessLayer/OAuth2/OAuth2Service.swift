@@ -18,35 +18,28 @@ final class OAuth2Service {
             OAuth2TokenStorage().token = newValue
         }
     }
-       
-    func fetchOAuthToken(
-        _ code: String,
-        completion: @escaping (Result<String, Error>) -> Void) {
-            guard let request = authTokenRequest(code: code)
-            else {
-                return
-            }
-            
-            object(for: request) { result in
-                switch result {
-                case .success(let body):
-                    let authToken = body.accessToken
-                    self.authToken = authToken
-                    completion(.success(authToken))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+    
+    func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let request = authTokenRequest(code: code) else { return }
+        
+        object(for: request) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
+    }
 }
 
 extension OAuth2Service {
     
     private func authTokenRequest(code: String) -> URLRequest? {
-        guard let url = URL(string: "https://unsplash.com")
-        else {
-            return nil
-        }
+        guard let url = URL(string: "https://unsplash.com") else { return nil }
         return URLRequest.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(accessKey)"
@@ -55,26 +48,23 @@ extension OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: url
-        )
+            baseURL: url)
     }
     
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) {
+    private func object(for request: URLRequest,
+                        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) {
         let decoder = JSONDecoder()
         return request.data(for: request) { (result: Result<Data, Error>) in
             let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
                 Result {
                     try decoder.decode(OAuthTokenResponseBody.self, from: data)
-   }
+                }
             }
             completion(response)
             return
         }
     }
-   
+    
     private struct OAuthTokenResponseBody: Decodable {
         let accessToken: String
         let tokenType: String
@@ -88,39 +78,39 @@ extension OAuth2Service {
             case createdAt = "created_at"
         }
     }
-    
 }
+
 // MARK: - HTTP Request
 
-    extension URLRequest {
-        static func makeHTTPRequest(
-            path: String,
-            httpMethod: String,
-            baseURL: URL = defaultBaseURL
-        ) -> URLRequest? {
-            guard let url = URL(string: path, relativeTo: baseURL)
-            else {
-                return nil
-            }
-            var request = URLRequest(url: url)
-            request.httpMethod = httpMethod
-            return request
+extension URLRequest {
+    static func makeHTTPRequest(
+        path: String,
+        httpMethod: String,
+        baseURL: URL = defaultBaseURL
+    ) -> URLRequest? {
+        guard let url = URL(string: path, relativeTo: baseURL)
+        else {
+            return nil
         }
+        var request = URLRequest(url: url)
+        request.httpMethod = httpMethod
+        return request
     }
+}
 
 // MARK: - Network Connection
 
-    enum NetworkError: Error {
-        case httpStatusCode(Int)
-        case urlRequestError(Error)
-        case urlSessionError
-    }
+enum NetworkError: Error {
+    case httpStatusCode(Int)
+    case urlRequestError(Error)
+    case urlSessionError
+}
 
 extension URLRequest {
     func data(
         for request: URLRequest,
-        completion: @escaping (Result<Data, Error>) -> Void
-    ) {
+        completion: @escaping (Result<Data, Error>) -> Void)
+    {
         let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)

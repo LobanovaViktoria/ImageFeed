@@ -12,7 +12,6 @@ private struct APIConstants {
     static let authorizeURLString = "https://unsplash.com/oauth/authorize"
     static let code = "code"
     static let authorizathionPath = "/oauth/authorize/native"
-    static let defaultBaseURL = URL(string: "https://api.unsplash.com")!
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -40,8 +39,8 @@ final class WebViewViewController: UIViewController {
         print("Press button")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         webView.addObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -50,8 +49,8 @@ final class WebViewViewController: UIViewController {
         updateProgress()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         webView.removeObserver(
             self,
             forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -73,9 +72,9 @@ final class WebViewViewController: UIViewController {
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-        
     }
 }
+
 private extension WebViewViewController {
     func loadWebView() {
         var urlComponents = URLComponents(string: APIConstants.authorizeURLString)
@@ -88,6 +87,7 @@ private extension WebViewViewController {
         if let url = urlComponents?.url {
             let request = URLRequest(url: url)
             webView.load(request)
+            updateProgress()
         }
     }
     
@@ -105,9 +105,9 @@ private extension WebViewViewController {
 }
 
 extension WebViewViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        // print("ITS LIT", navigationAction.request.url)
-        
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = fetchCode(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)

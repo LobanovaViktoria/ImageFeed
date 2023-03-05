@@ -121,6 +121,7 @@
 		320AD53429798C7F00B7B6C9 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				3226E1A529B4A88800318BDA /* ServiceAccessLayer */,
 				3226E1A229B47B5C00318BDA /* SplashViewController */,
 				3272E44129AE1D26007DC111 /* Auth */,
 				32BBB953299FDC2C00633FDB /* SingleImage */,
@@ -163,6 +164,23 @@
 			path = SplashViewController;
 			sourceTree = "<group>";
 		};
+		3226E1A529B4A88800318BDA /* ServiceAccessLayer */ = {
+			isa = PBXGroup;
+			children = (
+				3226E1A629B4A89B00318BDA /* OAuth2 */,
+			);
+			path = ServiceAccessLayer;
+			sourceTree = "<group>";
+		};
+		3226E1A629B4A89B00318BDA /* OAuth2 */ = {
+			isa = PBXGroup;
+			children = (
+				3226E19E29B2115A00318BDA /* OAuth2Service.swift */,
+				3226E1A029B231FF00318BDA /* OAuth2TokenStorage.swift */,
+			);
+			path = OAuth2;
+			sourceTree = "<group>";
+		};
 		327154FF297C754E00CF4A2A /* ImagesList */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,8 +195,6 @@
 			children = (
 				3272E43F29AE1D02007DC111 /* AuthViewController.swift */,
 				3272E44229AE2530007DC111 /* WebViewViewController.swift */,
-				3226E19E29B2115A00318BDA /* OAuth2Service.swift */,
-				3226E1A029B231FF00318BDA /* OAuth2TokenStorage.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
