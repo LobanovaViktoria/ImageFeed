@@ -12,6 +12,7 @@ private struct APIConstants {
     static let authorizeURLString = "https://unsplash.com/oauth/authorize"
     static let code = "code"
     static let authorizathionPath = "/oauth/authorize/native"
+    static let defaultBaseURL = URL(string: "https://api.unsplash.com")!
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
