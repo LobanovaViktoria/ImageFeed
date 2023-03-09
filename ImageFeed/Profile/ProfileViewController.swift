@@ -18,7 +18,6 @@ final class ProfileViewController: UIViewController {
     
     private let userName: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
         label.textColor = .ypWhite
         label.font = .boldSystemFont(ofSize: 23)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +26,6 @@ final class ProfileViewController: UIViewController {
     
     private let userLogin: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
         label.textColor = .ypGray
         label.font = .systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +34,6 @@ final class ProfileViewController: UIViewController {
     
     private let userStatus: UILabel = {
         let label = UILabel()
-        label.text = "Hello, world!!!"
         label.textColor = .ypWhite
         label.font = .systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -59,6 +56,24 @@ final class ProfileViewController: UIViewController {
         
         addSubviews()
         setupLayout()
+        fetchProfile()
+    }
+    
+    private func fetchProfile() {
+        guard let token = OAuth2TokenStorage().token else { return }
+        
+        ProfileService().fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                self.userName.text = profile.name
+                self.userLogin.text = profile.loginName
+                self.userStatus.text = profile.bio
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
     }
     
     @objc
