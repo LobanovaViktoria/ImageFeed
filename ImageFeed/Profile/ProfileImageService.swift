@@ -44,7 +44,7 @@ final class ProfileImageService {
             DispatchQueue.main.async {
                 completion?(result)
                 NotificationCenter.default
-                    .post(name: ProfileImageService.DidChangeNotification, object: self, userInfo: ["URL" : self.avatarURL])
+                    .post(name: ProfileImageService.DidChangeNotification, object: self, userInfo: ["URL" : self.avatarURL ?? ""])
                 return
             }
         }
