@@ -29,6 +29,10 @@ public struct Profile {
 }
 
 final class ProfileService {
+    
+    static let shared = ProfileService()
+    private (set) var profile: Profile?
+    
     public func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         guard let request = fetchProfileRequest(token) else { return }
         let decoder = JSONDecoder()
@@ -46,8 +50,8 @@ final class ProfileService {
             {
                 if 200 ..< 300 ~= statusCode,
                    let profileResult = try? decoder.decode(ProfileResult.self, from: data) {
-                    let profile = Profile(userName: profileResult.userName ?? "", name: "\(profileResult.firstName ?? "") " + "\(profileResult.lastName ?? "")", loginName: "@\(profileResult.userName ?? "")" , bio: profileResult.bio ?? "")
-                    fulfillCompletion(.success(profile))
+                    self.profile = Profile(userName: profileResult.userName ?? "", name: "\(profileResult.firstName ?? "") " + "\(profileResult.lastName ?? "")", loginName: "@\(profileResult.userName ?? "")" , bio: profileResult.bio ?? "")
+                    fulfillCompletion(.success(self.profile!))
                 } else {
                     fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
                 }

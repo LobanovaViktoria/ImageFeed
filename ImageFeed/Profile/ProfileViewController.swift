@@ -9,9 +9,10 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    
     private let imageView: UIImageView = {
-        let profileImage = UIImage(named: "photo")
-        let imageView = UIImageView(image: profileImage)
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -56,24 +57,14 @@ final class ProfileViewController: UIViewController {
         
         addSubviews()
         setupLayout()
-        fetchProfile()
+        updateProfileDetails()
     }
     
-    private func fetchProfile() {
-        guard let token = OAuth2TokenStorage().token else { return }
-        
-        ProfileService().fetchProfile(token) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let profile):
-                self.userName.text = profile.name
-                self.userLogin.text = profile.loginName
-                self.userStatus.text = profile.bio
-            case .failure(let error):
-                print(error)
-            }
-            
-        }
+    private func updateProfileDetails() {
+        userName.text = profileService.profile?.name
+        userLogin.text = profileService.profile?.loginName
+        userStatus.text = profileService.profile?.bio
+       // imageView.image = UIIM
     }
     
     @objc
@@ -108,7 +99,7 @@ final class ProfileViewController: UIViewController {
             
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26),
             logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
-            ])
+        ])
     }
 }
-        
+

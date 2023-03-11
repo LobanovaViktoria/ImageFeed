@@ -11,14 +11,18 @@ import ProgressHUD
 final class SplashViewController: UIViewController {
     
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreenSegueIdentifier"
-    private let oauth2Service = OAuth2Service()
+    private let oauth2Service = OAuth2Service.shared
     private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let profileImageService = ProfileImageService.shared
+    private let profileService = ProfileService.shared
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if OAuth2TokenStorage().token != nil {
-            switchToTabBarController()
+            guard let token = OAuth2TokenStorage().token else { return }
+            //switchToTabBarController()
+            fetchProfile(token: token)
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -70,9 +74,23 @@ extension SplashViewController: AuthViewControllerDelegate {
         oauth2Service.fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success:
-                self.switchToTabBarController()
+            case .success(let token):
+                self.fetchProfile(token: token)
+            case .failure:
                 UIBlockingProgressHUD.dismiss()
+                break
+            }
+        }
+    }
+    
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                self.profileImageService.fetchProfileImageURL(token, username: profile.userName, completion: nil)
+                UIBlockingProgressHUD.dismiss()
+                self.switchToTabBarController()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
                 break
