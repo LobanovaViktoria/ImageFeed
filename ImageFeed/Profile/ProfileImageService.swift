@@ -22,7 +22,7 @@ struct ImageURL: Codable {
 final class ProfileImageService {
     static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
-    private (set) var avatarURL: URL?
+    private (set) var avatarURL: String?
     
     // метод для получения URL small версии аватарки пользователя
     
@@ -36,11 +36,11 @@ final class ProfileImageService {
         return request
     }
     
-    func fetchProfileImageURL(_ token: String, username: String?, completion: ((Result<URL?, Error>) -> Void)?) {
+    func fetchProfileImageURL(_ token: String, username: String?, completion: ((Result<String?, Error>) -> Void)?) {
         guard let username = username else { return }
         guard let request = fetchProfileImageRequest(token, username: username) else { return }
         let decoder = JSONDecoder()
-        let fulfillCompletion: (Result<URL?, Error>) -> Void = { result in
+        let fulfillCompletion: (Result<String?, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion?(result)
                 NotificationCenter.default
@@ -56,7 +56,7 @@ final class ProfileImageService {
             {
                 if 200 ..< 300 ~= statusCode,
                    let userResult = try? decoder.decode(UserResult.self, from: data) {
-                    self.avatarURL = userResult.profileImage?.small
+                    self.avatarURL = userResult.profileImage?.small?.absoluteString
                     fulfillCompletion(.success(self.avatarURL))
                 } else {
                     fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))

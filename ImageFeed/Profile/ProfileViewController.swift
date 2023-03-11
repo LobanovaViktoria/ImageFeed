@@ -58,9 +58,48 @@ final class ProfileViewController: UIViewController {
         addSubviews()
         setupLayout()
         updateProfileDetails()
+        
+        if let avatarURL = ProfileImageService.shared.avatarURL,
+           let url = URL(string: avatarURL) {
+            // TODO обновить аватар, если нотификация была
+            //опубликована до того, как мы подписались
+        }
     }
     
-    private func updateProfileDetails() {
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        addObserver()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        addObserver()
+    }
+        
+        deinit {
+            removeObserver()
+        }
+    
+        private func addObserver() {
+            NotificationCenter.default.addObserver(self, selector: #selector(updateAvatar(notification:)), name: ProfileImageService.DidChangeNotification, object: nil)
+        }
+        
+        private func removeObserver() {
+            NotificationCenter.default.removeObserver(self, name: ProfileImageService.DidChangeNotification, object: nil)
+        }
+        
+        @objc
+        private func updateAvatar(notification: Notification) {
+            guard
+                isViewLoaded,
+                let userInfo = notification.userInfo,
+                let profileImageURL = userInfo["URL"] as? String,
+                let url = URL(string: profileImageURL)
+            else { return }
+            // TODO обновить аватар используя Kingfisher
+        }
+    
+        private func updateProfileDetails() {
         userName.text = profileService.profile?.name
         userLogin.text = profileService.profile?.loginName
         userStatus.text = profileService.profile?.bio
