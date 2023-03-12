@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -59,6 +60,7 @@ final class ProfileViewController: UIViewController {
         
         addSubviews()
         setupLayout()
+        
         updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default
@@ -69,7 +71,7 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-updateAvatar()
+        updateAvatar()
     }
     
     private func updateAvatar() {
@@ -77,21 +79,17 @@ updateAvatar()
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO обновить аватар, используя KingFisher
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor)])
     }
     
-//    open func addObserver(
-//        forName name: NSNotification.Name?,
-//        object obj: Any?,
-//        queue: OperationQueue?,
-//        using block: @escaping (Notification) -> Void
-//    ) -> NSObjectProtocol
-        
-        private func updateProfileDetails() {
+    
+    private func updateProfileDetails() {
         userName.text = profileService.profile?.name
         userLogin.text = profileService.profile?.loginName
         userStatus.text = profileService.profile?.bio
-       // imageView.image = UIIM
+        
     }
     
     @objc

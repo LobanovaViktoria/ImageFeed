@@ -10,13 +10,13 @@ import Foundation
 struct UserResult: Decodable {
     let profileImage: ImageURL?
     
-    enum KodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case profileImage = "profile_image"
     }
 }
 
 struct ImageURL: Decodable {
-    let small: URL?
+    let small: String?
 }
 
 final class ProfileImageService {
@@ -45,7 +45,7 @@ extension ProfileImageService {
             self.task = nil
             switch result {
             case .success(let userResult):
-                self.avatarURL = userResult.profileImage?.small?.absoluteString
+                self.avatarURL = userResult.profileImage?.small
                 NotificationCenter.default
                     .post(name: ProfileImageService.DidChangeNotification, object: self, userInfo: ["URL" : self.avatarURL ?? ""])
                 completion(.success(self.avatarURL))
