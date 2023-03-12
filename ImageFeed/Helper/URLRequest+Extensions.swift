@@ -35,7 +35,6 @@ extension URLRequest {
                 fulfillCompletion(.failure(NetworkError.urlSessionError))
             }
         })
-        task.resume()
         return task
     }
     

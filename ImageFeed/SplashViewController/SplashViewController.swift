@@ -21,7 +21,6 @@ final class SplashViewController: UIViewController {
         
         if OAuth2TokenStorage().token != nil {
             guard let token = OAuth2TokenStorage().token else { return }
-            //switchToTabBarController()
             fetchProfile(token: token)
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
@@ -59,6 +58,19 @@ extension SplashViewController {
             super.prepare(for: segue, sender: sender)
         }
     }
+   
+    func showError() {
+        let alertController = UIAlertController(    // создаем и показываем алерт
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert)
+        let action = UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil)
+        alertController.addAction(action)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
@@ -78,6 +90,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure:
                 UIBlockingProgressHUD.dismiss()
+                self.showError()
                 break
             }
         }
