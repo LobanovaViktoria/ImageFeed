@@ -73,11 +73,11 @@ private extension WebViewViewController {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: accessScope)
         ]
-        if let url = urlComponents?.url {
-            let request = URLRequest(url: url)
-            webView.load(request)
-            updateProgress()
-        }
+        guard let url = urlComponents?.url else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
+        updateProgress()
+        
     }
     
     func fetchCode(from navigationAction: WKNavigationAction) -> String? {

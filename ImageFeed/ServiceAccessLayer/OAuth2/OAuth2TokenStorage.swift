@@ -9,7 +9,7 @@ import Foundation
 import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
-    let kToken = "token"
+    private let kToken = "token"
     var token: String? {
         set {
             guard let token = newValue else {
