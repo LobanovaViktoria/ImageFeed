@@ -17,6 +17,7 @@ final class ProfileViewController: UIViewController {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
         return imageView
     }()
     
@@ -79,7 +80,7 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        let processor = RoundCornerImageProcessor(cornerRadius: 61, backgroundColor: .clear)
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor)])
     }
@@ -94,7 +95,7 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapLogoutButton() {
-        print("didTapLogoutButton")
+        OAuth2TokenStorage().token = nil
     }
     
     private func addSubviews() {
