@@ -36,6 +36,7 @@
 		32A7106A298BEB1100906668 /* Color+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A71069298BEB1100906668 /* Color+Extentions.swift */; };
 		32A7106D298BEF5100906668 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A7106C298BEF5100906668 /* ProfileViewController.swift */; };
 		32BBB952299FCBFB00633FDB /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BBB951299FCBFB00633FDB /* SingleImageViewController.swift */; };
+		32BF6CCB29BFB77400CE8B75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF6CCA29BFB77400CE8B75 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		32A71069298BEB1100906668 /* Color+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extentions.swift"; sourceTree = "<group>"; };
 		32A7106C298BEF5100906668 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		32BBB951299FCBFB00633FDB /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
+		32BF6CCA29BFB77400CE8B75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 		320AD53429798C7F00B7B6C9 /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				32BF6CCA29BFB77400CE8B75 /* TabBarController.swift */,
 				3226E1AA29B7605700318BDA /* UIBlockingProgressHUD.swift */,
 				3226E1A529B4A88800318BDA /* ServiceAccessLayer */,
 				3226E1A229B47B5C00318BDA /* SplashViewController */,
@@ -423,6 +426,7 @@
 				32BBB952299FCBFB00633FDB /* SingleImageViewController.swift in Sources */,
 				320AD53829798C7F00B7B6C9 /* SceneDelegate.swift in Sources */,
 				3226E1B229BDDEBC00318BDA /* URLSession+Extentions.swift in Sources */,
+				32BF6CCB29BFB77400CE8B75 /* TabBarController.swift in Sources */,
 				3226E1A129B231FF00318BDA /* OAuth2TokenStorage.swift in Sources */,
 				329591F229AE021000AF59D6 /* Constants.swift in Sources */,
 			);
