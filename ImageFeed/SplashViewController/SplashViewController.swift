@@ -15,7 +15,7 @@ final class SplashViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
     
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "splash_screen_logo")
@@ -118,12 +118,11 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let profile):
                 self.profileImageService.fetchProfileImageURL(token, username: profile.userName) { _ in }
-                UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure:
-                UIBlockingProgressHUD.dismiss()
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
 }

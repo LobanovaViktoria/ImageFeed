@@ -8,17 +8,15 @@
 import Foundation
 
 extension URLRequest {
-    func data(
+    func sessionTask(
         for request: URLRequest,
         completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionDataTask?
     {
         let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
             DispatchQueue.main.async {
                 completion(result)
-                return
             }
         }
-        
         let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             if let data = data,
                let response = response,

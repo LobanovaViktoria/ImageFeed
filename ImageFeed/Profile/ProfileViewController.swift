@@ -14,14 +14,15 @@ final class ProfileViewController: UIViewController {
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
-    private let imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+        imageView.layer.cornerRadius = 61
+        imageView.backgroundColor = .ypBlack
         return imageView
     }()
     
-    private let userName: UILabel = {
+    private lazy var userName: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhite
         label.font = .boldSystemFont(ofSize: 23)
@@ -29,7 +30,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let userLogin: UILabel = {
+    private lazy var userLogin: UILabel = {
         let label = UILabel()
         label.textColor = .ypGray
         label.font = .systemFont(ofSize: 13)
@@ -37,7 +38,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let userStatus: UILabel = {
+    private lazy var userStatus: UILabel = {
         let label = UILabel()
         label.textColor = .ypWhite
         label.font = .systemFont(ofSize: 13)
@@ -58,10 +59,10 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .ypBlack
         addSubviews()
         setupLayout()
-        
+        updateAvatar()
         updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default
@@ -72,10 +73,11 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-        updateAvatar()
+        
     }
     
     private func updateAvatar() {
+        
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
