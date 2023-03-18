@@ -6,37 +6,38 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    private let imageView: UIImageView = {
-        let profileImage = UIImage(named: "photo")
-        let imageView = UIImageView(image: profileImage)
+    private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let userName: UILabel = {
+    private lazy var userName: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
         label.textColor = .ypWhite
         label.font = .boldSystemFont(ofSize: 23)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let userLogin: UILabel = {
+    private lazy var userLogin: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
         label.textColor = .ypGray
         label.font = .systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let userStatus: UILabel = {
+    private lazy var userStatus: UILabel = {
         let label = UILabel()
-        label.text = "Hello, world!!!"
         label.textColor = .ypWhite
         label.font = .systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -56,14 +57,44 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         addSubviews()
         setupLayout()
+        updateAvatar()
+        updateProfileDetails()
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.DidChangeNotification,
+                         object: nil,
+                         queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        
+    }
+    
+    private func updateAvatar() {
+        view.backgroundColor = .ypBlack
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        let processor = RoundCornerImageProcessor(cornerRadius: 35, backgroundColor: .clear)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
+    }
+    
+    
+    private func updateProfileDetails() {
+        userName.text = profileService.profile?.name
+        userLogin.text = profileService.profile?.loginName
+        userStatus.text = profileService.profile?.bio
+        
     }
     
     @objc
     private func didTapLogoutButton() {
-        print("didTapLogoutButton")
+        OAuth2TokenStorage().token = nil
     }
     
     private func addSubviews() {
@@ -93,7 +124,7 @@ final class ProfileViewController: UIViewController {
             
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26),
             logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
-            ])
+        ])
     }
 }
-        
+
