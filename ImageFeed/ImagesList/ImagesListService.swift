@@ -58,7 +58,7 @@ final class ImagesListService {
 
 extension ImagesListService {
     
-    func fetchPhotosNextPage(_ token: String) {
+    func fetchPhotosNextPage() {
         //Логика для предотвращения гонки
         assert(Thread.isMainThread)
         task?.cancel()
@@ -66,7 +66,7 @@ extension ImagesListService {
         let page = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
         
         //Формирование URLRequest на получение картинок с unsplash.com
-        guard let request = fetchImagesListRequest(token, page: String(page), perPage: perPage) else { return }
+        guard let request = fetchImagesListRequest(page: String(page), perPage: perPage) else { return }
         
         //создание URLSessionDataTask на получение картинок с unsplash.com
         
@@ -110,13 +110,15 @@ extension ImagesListService {
                           isLiked: photoResult.isLiked ?? false)
     }
     
-    private func fetchImagesListRequest(_ token: String, page: String, perPage: String) -> URLRequest? {
+    private func fetchImagesListRequest(page: String, perPage: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
             baseURL: url)
-        request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        if let token = OAuth2TokenStorage().token {
+            request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         return request
     }
     

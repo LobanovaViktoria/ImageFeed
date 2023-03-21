@@ -27,8 +27,6 @@ final class SplashViewController: UIViewController {
         
         if OAuth2TokenStorage().token != nil {
             guard let token = OAuth2TokenStorage().token else { return }
-
-            fetchPhotos(token: token)
         }
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -134,20 +132,4 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
         }
     }
-    private func fetchPhotos(token: String) {
-        imagesListService.fetchPhotosNextPage(token)
-//        { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(_):
-//                self.imagesListService.fetchPhotosNextPage(token)
-//               { _ in }
-//                self.switchToTabBarController()
-//            case .failure:
-//                break
-//            }
-//            UIBlockingProgressHUD.dismiss()
-//        }
-    }
-    
 }
