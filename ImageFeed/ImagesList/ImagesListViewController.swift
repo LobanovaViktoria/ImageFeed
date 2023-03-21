@@ -19,9 +19,22 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     
+    private var imagesListServiceObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        imagesListServiceObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.didChangeNotification,
+            object: nil, queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateImages()
+        }
+    }
+    
+    private func updateImages() {
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -77,6 +90,12 @@ extension ImagesListViewController: UITableViewDataSource {
         return photosName.count
     }
     
+    //
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    
+    }
+    
+    
     // Метод протокола, который возвращает ячейку
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
@@ -89,4 +108,5 @@ extension ImagesListViewController: UITableViewDataSource {
         return imageListCell
     }
 }
+
 

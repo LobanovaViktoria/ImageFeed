@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController:UIViewController {
     
     private let profileService = ProfileService.shared
     
@@ -63,14 +63,14 @@ final class ProfileViewController: UIViewController {
         updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.DidChangeNotification,
-                         object: nil,
-                         queue: .main
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-        
     }
     
     private func updateAvatar() {
@@ -84,12 +84,10 @@ final class ProfileViewController: UIViewController {
         imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
-    
     private func updateProfileDetails() {
         userName.text = profileService.profile?.name
         userLogin.text = profileService.profile?.loginName
         userStatus.text = profileService.profile?.bio
-        
     }
     
     @objc
