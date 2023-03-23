@@ -64,7 +64,7 @@ final class ImagesListViewController: UIViewController {
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        if let urlString = ImagesListService.shared.photos[indexPath.row].thumbImageURL,
+        if let urlString = imagesListService.photos[indexPath.row].thumbImageURL,
            let imagesURL = URL(string: urlString) {
             cell.cellImageView.kf.indicatorType = .activity
             cell.cellImageView.kf.setImage(with: imagesURL,
@@ -75,9 +75,25 @@ final class ImagesListViewController: UIViewController {
             
             cell.dateLabel.text = dateFormatter.string(from: imagesListService.photos[indexPath.row].createdAt ?? Date())
             
-            //            let isLiked = indexPath.row % 2 == 0
-            //            let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "YesActive")
-            //            cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
+            let isLiked = imagesListService.photos[indexPath.row].isLiked == false
+            let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "yesActive")
+            cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
+            
+            cell.likeOrDislikeAction = { [weak self] in
+                guard let self = self else { return }
+                let photoId = self.imagesListService.photos[indexPath.row].id
+                cell.likeOrDislakeButton.setImage(UIImage(named: "yesActive"), for: .normal)
+                self.imagesListService.changeLike(photoId: photoId, isLike: true) { [weak self] result in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success(_):
+                        break
+                    case .failure(_):
+                        print("не удалось поставить лайк")
+                        cell.likeOrDislakeButton.imageView?.image = UIImage(named: "noActive")
+                    }
+                }
+            }
         }
     }
 }

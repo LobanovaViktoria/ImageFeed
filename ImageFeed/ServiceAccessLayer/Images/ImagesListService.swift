@@ -37,6 +37,10 @@ struct ImageUrlsResult: Decodable {
     }
 }
 
+struct LikePhotoResult: Decodable {
+    let photo: PhotoResult?
+}
+
 struct Photo {
     let id: String
     let size: CGSize
@@ -118,5 +122,69 @@ extension ImagesListService {
             baseURL: url)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
+    }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        //Логика для предотвращения гонки
+        assert(Thread.isMainThread)
+        task?.cancel()
+        
+        guard let token = OAuth2TokenStorage().token else { return }
+        //Формирование URLRequest на получение картинок с unsplash.com
+        guard let request = postLikeRequest(token, photoId: photoId) else { return }
+        
+        //создание URLSessionDataTask для проставления лайка unsplash.com
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<LikePhotoResult, Error>) in
+            guard let self = self else { return }
+            self.task = nil
+            switch result {
+            case .success(let photoResult):
+                let isLiked = photoResult.photo?.isLiked ?? false
+                if let index = self.photos.firstIndex(where: { $0.id == photoResult.photo?.id }) {
+                    // Текущий элемент
+                    let photo = self.photos[index]
+                    // Копия элемента с инвертированным значением isLiked
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: <#T##Date?#>,
+                        welcomeDescription: <#T##String?#>,
+                        thumbImageURL: <#T##String?#>,
+                        largeImageURL: <#T##String?#>,
+                        isLiked: <#T##Bool#>)
+                }
+                
+                
+                //var photos = ImagesListService.shared.photos
+                print("isLiked = \(String(describing: isLiked))")
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        self.task = task
+        task?.resume()
+    }
+    
+    private func postLikeRequest(_ token: String, photoId: String) -> URLRequest? {
+        //POST /photos/:id/like
+        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
+        var requestPost = URLRequest.makeHTTPRequest(
+            path: "photos/\(photoId)/like",
+            httpMethod: "POST",
+            baseURL: url)
+        requestPost?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return requestPost
+    }
+    
+    private func deleteLikeRequest(_ token: String, photoId: String, isLike: Bool) -> URLRequest? {
+        //DELETE /photos/:id/like
+        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
+        var requestDelete = URLRequest.makeHTTPRequest(
+            path: "photos/\(photoId)/like",
+            httpMethod: "DELETE",
+            baseURL: url)
+        requestDelete?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return requestDelete
     }
 }

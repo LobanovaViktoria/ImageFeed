@@ -12,9 +12,17 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var cellImageView: UIImageView!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeOrDislakeButton: UIButton!
+    
+    var likeOrDislikeAction: (() -> Void)?
+    
     static let reuseIdentifier = "ImagesListCell"
    
 
+    @IBAction func likeOrDislikeButtonTapped(_ sender: Any) {
+        if let action = likeOrDislikeAction {
+            action()
+        }
+    }
     override func prepareForReuse() {
         super.prepareForReuse()
         
