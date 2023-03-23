@@ -58,13 +58,13 @@ final class ImagesListService {
 
 extension ImagesListService {
     
-    func fetchPhotosNextPage(_ token: String) {
+    func fetchPhotosNextPage() {
         //Логика для предотвращения гонки
         assert(Thread.isMainThread)
         task?.cancel()
         
         let page = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
-        
+        guard let token = OAuth2TokenStorage().token else { return }
         //Формирование URLRequest на получение картинок с unsplash.com
         guard let request = fetchImagesListRequest(token, page: String(page), perPage: perPage) else { return }
         
@@ -119,7 +119,4 @@ extension ImagesListService {
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-    
-    
-    
 }

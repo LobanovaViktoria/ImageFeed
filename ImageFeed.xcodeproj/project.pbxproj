@@ -191,6 +191,7 @@
 		3226E1A529B4A88800318BDA /* ServiceAccessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				32CC33FA29CC41D0009216C7 /* Images */,
 				3226E1B029BDDE8700318BDA /* Profile */,
 				3226E1A629B4A89B00318BDA /* OAuth2 */,
 				3226E1B529BDDF7F00318BDA /* NetworkError.swift */,
@@ -221,7 +222,6 @@
 			children = (
 				320AD53929798C7F00B7B6C9 /* ImagesListViewController.swift */,
 				327154FD297C754400CF4A2A /* ImagesListCell.swift */,
-				32CC33F829C5F00C009216C7 /* ImagesListService.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -259,6 +259,14 @@
 				32BBB951299FCBFB00633FDB /* SingleImageViewController.swift */,
 			);
 			path = SingleImage;
+			sourceTree = "<group>";
+		};
+		32CC33FA29CC41D0009216C7 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				32CC33F829C5F00C009216C7 /* ImagesListService.swift */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		32E4A5D7297AEF2700F4E92A /* Resources */ = {

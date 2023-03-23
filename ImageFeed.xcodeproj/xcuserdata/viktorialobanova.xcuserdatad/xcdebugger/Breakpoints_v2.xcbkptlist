@@ -55,31 +55,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "15BCCEDE-4B41-4436-A6C5-5A26D5742217"
+            uuid = "AACCC54B-1759-48AB-AA53-C082D72E4458"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ImageFeed/Auth/AuthViewController.swift"
+            filePath = "ImageFeed/ImagesList/ImagesListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "prepare(for:sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A90C0CA5-5FF0-4A74-97A5-C5715D2B2BD0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ImageFeed/Auth/AuthViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "prepare(for:sender:)"
             landmarkType = "7">
          </BreakpointContent>

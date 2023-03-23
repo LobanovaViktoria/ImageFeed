@@ -181,8 +181,8 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="dateCell" destination="KQT-dh-kPC" id="Xlz-Ni-aCr"/>
-                                            <outlet property="imageCell" destination="cfr-mN-UiM" id="NIF-9l-0Mk"/>
+                                            <outlet property="cellImageView" destination="cfr-mN-UiM" id="NIF-9l-0Mk"/>
+                                            <outlet property="dateLabel" destination="KQT-dh-kPC" id="Xlz-Ni-aCr"/>
                                             <outlet property="likeOrDislakeButton" destination="Q3W-tA-jhH" id="ash-TB-L8l"/>
                                         </connections>
                                     </tableViewCell>
