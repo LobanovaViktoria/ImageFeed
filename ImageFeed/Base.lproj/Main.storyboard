@@ -165,7 +165,7 @@
                                                     <state key="normal" image="yesActive"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="yesActive"/>
                                                     <connections>
-                                                        <action selector="likeOrDislikeButtonTapped:" destination="xWC-TY-d3C" eventType="touchUpInside" id="GNn-MC-fzr"/>
+                                                        <action selector="likeOrDislikeButtonTapped:" destination="xWC-TY-d3C" eventType="touchUpInside" id="2Db-h9-50L"/>
                                                     </connections>
                                                 </button>
                                             </subviews>

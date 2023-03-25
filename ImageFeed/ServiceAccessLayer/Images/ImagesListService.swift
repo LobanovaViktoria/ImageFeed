@@ -51,6 +51,14 @@ struct Photo {
     let isLiked: Bool
 }
 
+extension Array {
+    func withReplaced(itemAt: Int, newValue: Photo) -> [Photo] {
+        var photos = ImagesListService.shared.photos
+        photos.replaceSubrange(itemAt...itemAt, with: [newValue])
+        return photos
+    }
+}
+
 final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     static let shared = ImagesListService()
@@ -58,6 +66,10 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     private let perPage = "10"
     private var task: URLSessionTask?
+    
+    func updatePhotos(_ photos: [Photo]) {
+        self.photos = photos
+    }
 }
 
 extension ImagesListService {
@@ -96,7 +108,6 @@ extension ImagesListService {
         }
         self.task = task
         task?.resume()
-        
     }
     
     private func convert(_ photoResult: PhotoResult) -> Photo {
@@ -131,7 +142,14 @@ extension ImagesListService {
         
         guard let token = OAuth2TokenStorage().token else { return }
         //Формирование URLRequest на получение картинок с unsplash.com
-        guard let request = postLikeRequest(token, photoId: photoId) else { return }
+        
+        var request: URLRequest?
+        if isLike {
+            request = deleteLikeRequest(token, photoId: photoId)
+        } else {
+            request = postLikeRequest(token, photoId: photoId)
+        }
+        guard let request = request else { return }
         
         //создание URLSessionDataTask для проставления лайка unsplash.com
         let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<LikePhotoResult, Error>) in
@@ -147,15 +165,15 @@ extension ImagesListService {
                     let newPhoto = Photo(
                         id: photo.id,
                         size: photo.size,
-                        createdAt: <#T##Date?#>,
-                        welcomeDescription: <#T##String?#>,
-                        thumbImageURL: <#T##String?#>,
-                        largeImageURL: <#T##String?#>,
-                        isLiked: <#T##Bool#>)
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: isLiked
+                    )
+                    // Заменяем элемент в массиве
+                    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
                 }
-                
-                
-                //var photos = ImagesListService.shared.photos
                 print("isLiked = \(String(describing: isLiked))")
                 completion(.success(()))
             case .failure(let error):
@@ -177,7 +195,7 @@ extension ImagesListService {
         return requestPost
     }
     
-    private func deleteLikeRequest(_ token: String, photoId: String, isLike: Bool) -> URLRequest? {
+    private func deleteLikeRequest(_ token: String, photoId: String) -> URLRequest? {
         //DELETE /photos/:id/like
         guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var requestDelete = URLRequest.makeHTTPRequest(
@@ -188,3 +206,5 @@ extension ImagesListService {
         return requestDelete
     }
 }
+
+

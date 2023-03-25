@@ -22,6 +22,7 @@ final class ImagesListViewController: UIViewController {
     private var photos: [Photo] = []
     private let imagesListService = ImagesListService.shared
     private var imagesListServiceObserver: NSObjectProtocol?
+    weak var delegate: ImagesListCellDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,22 +79,6 @@ final class ImagesListViewController: UIViewController {
             let isLiked = imagesListService.photos[indexPath.row].isLiked == false
             let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "yesActive")
             cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
-            
-            cell.likeOrDislikeAction = { [weak self] in
-                guard let self = self else { return }
-                let photoId = self.imagesListService.photos[indexPath.row].id
-                cell.likeOrDislakeButton.setImage(UIImage(named: "yesActive"), for: .normal)
-                self.imagesListService.changeLike(photoId: photoId, isLike: true) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(_):
-                        break
-                    case .failure(_):
-                        print("не удалось поставить лайк")
-                        cell.likeOrDislakeButton.imageView?.image = UIImage(named: "noActive")
-                    }
-                }
-            }
         }
     }
 }
@@ -138,9 +123,39 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imageListCell.delegate = self
+        
         configCell(for: imageListCell, with: indexPath)
         
         return imageListCell
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        // Покажем лоадер
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { result in
+            switch result {
+            case.success:
+                // Синхронизируем массив картинок с сервисом
+                self.photos = self.imagesListService.photos
+                // Изменим индикацию лайка картинки
+                cell.setIsLiked(isLiked: self.photos[indexPath.row].isLiked)
+                // Уберем лоадер
+                UIBlockingProgressHUD.dismiss()
+            case.failure:
+                // Уберём лоадер
+                UIBlockingProgressHUD.dismiss()
+                // Покажем, что что-то пошло не так
+                // TODO: Показать ошибку с использованием UIAlertController
+                
+            }
+        }
+        
     }
 }
 

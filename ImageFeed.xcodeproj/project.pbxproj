@@ -34,10 +34,10 @@
 		3272E44329AE2530007DC111 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3272E44229AE2530007DC111 /* WebViewViewController.swift */; };
 		329591F229AE021000AF59D6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329591F129AE021000AF59D6 /* Constants.swift */; };
 		32A7106A298BEB1100906668 /* Color+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A71069298BEB1100906668 /* Color+Extentions.swift */; };
-		32A7106D298BEF5100906668 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A7106C298BEF5100906668 /* ProfileViewController.swift */; };
 		32BBB952299FCBFB00633FDB /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BBB951299FCBFB00633FDB /* SingleImageViewController.swift */; };
 		32BF6CCB29BFB77400CE8B75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF6CCA29BFB77400CE8B75 /* TabBarController.swift */; };
 		32CC33F929C5F00C009216C7 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CC33F829C5F00C009216C7 /* ImagesListService.swift */; };
+		32CC343C29CCE675009216C7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CC343B29CCE675009216C7 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,10 +86,10 @@
 		3272E44229AE2530007DC111 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		329591F129AE021000AF59D6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		32A71069298BEB1100906668 /* Color+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extentions.swift"; sourceTree = "<group>"; };
-		32A7106C298BEF5100906668 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		32BBB951299FCBFB00633FDB /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		32BF6CCA29BFB77400CE8B75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		32CC33F829C5F00C009216C7 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
+		32CC343B29CCE675009216C7 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,7 +248,7 @@
 		32A7106B298BEF0D00906668 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				32A7106C298BEF5100906668 /* ProfileViewController.swift */,
+				32CC343B29CCE675009216C7 /* ProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -425,6 +425,7 @@
 				3226E19F29B2115A00318BDA /* OAuth2Service.swift in Sources */,
 				3272E44029AE1D02007DC111 /* AuthViewController.swift in Sources */,
 				320AD54029798C7F00B7B6C9 /* ImageFeed.xcdatamodeld in Sources */,
+				32CC343C29CCE675009216C7 /* ProfileViewController.swift in Sources */,
 				3226E1AF29BA0DE300318BDA /* ProfileImageService.swift in Sources */,
 				32CC33F929C5F00C009216C7 /* ImagesListService.swift in Sources */,
 				3226E1A429B47B6B00318BDA /* SplashViewController.swift in Sources */,
@@ -433,7 +434,6 @@
 				3272E44329AE2530007DC111 /* WebViewViewController.swift in Sources */,
 				327154FE297C754400CF4A2A /* ImagesListCell.swift in Sources */,
 				3226E1AB29B7605700318BDA /* UIBlockingProgressHUD.swift in Sources */,
-				32A7106D298BEF5100906668 /* ProfileViewController.swift in Sources */,
 				320AD53629798C7F00B7B6C9 /* AppDelegate.swift in Sources */,
 				32BBB952299FCBFB00633FDB /* SingleImageViewController.swift in Sources */,
 				320AD53829798C7F00B7B6C9 /* SceneDelegate.swift in Sources */,
