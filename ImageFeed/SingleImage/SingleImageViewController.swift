@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 
 final class SingleImageViewController: UIViewController {
+    
     var imageURL: URL?
     var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -20,6 +21,7 @@ final class SingleImageViewController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 7.25
+        
         return scrollView
     }()
     
@@ -50,7 +52,7 @@ final class SingleImageViewController: UIViewController {
 
     @objc
     private func didTapBackButtonSingleImage() {
-        navigationController?.pushViewController(, animated: <#T##Bool#>)
+     dismiss(animated: true)
     }
     
     @objc
