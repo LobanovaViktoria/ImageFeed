@@ -17,13 +17,13 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeOrDislakeButton: UIButton!
     weak var delegate: ImagesListCellDelegate?
-   
+    
     static let reuseIdentifier = "ImagesListCell"
-   
+    
     @IBAction func likeOrDislikeButtonTapped(_ sender: Any) {
-            delegate?.imageListCellDidTapLike(self)
-            }
-     
+        delegate?.imageListCellDidTapLike(self)
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         // Отменяем загрузку, чтобы избежать багов при переиспользовании ячеек

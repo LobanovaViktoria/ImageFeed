@@ -77,7 +77,6 @@ private extension WebViewViewController {
         let request = URLRequest(url: url)
         webView.load(request)
         updateProgress()
-        
     }
     
     func fetchCode(from navigationAction: WKNavigationAction) -> String? {
