@@ -11,19 +11,23 @@ import Kingfisher
 final class SingleImageViewController: UIViewController {
     
     var imageURL: URL?
-    var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 7.25
-        
+    lazy var scrollView: UIScrollView = {
+       let scrollView = UIScrollView()
+        scrollView.backgroundColor = .ypWhite
+        scrollView.frame = view.bounds
+        scrollView.contentSize = contentSize
         return scrollView
     }()
+    
+    private var contentSize: CGSize {
+        CGSize(width: view.frame.width, height: view.frame.height)
+    }
     
     @objc private lazy var backButton: UIButton = {
         let button = UIButton.systemButton(
@@ -45,9 +49,15 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        scrollView.minimumZoomScale = 0.1
+        scrollView.maximumZoomScale = 1.25
+        scrollView.delegate = self
         addSubviews()
         setupLayout()
+        
         loadImageView()
+        
     }
 
     @objc
@@ -61,25 +71,23 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func addSubviews() {
-        view.addSubview(imageView)
         view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
         view.addSubview(backButton)
         view.addSubview(shareButton)
     }
     
     private func setupLayout() {
         NSLayoutConstraint.activate([
-            
-            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            
-            
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            
+            imageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0),
+            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0),
+            imageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
+            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0),
             
             shareButton.widthAnchor.constraint(equalToConstant: 50),
             shareButton.heightAnchor.constraint(equalToConstant: 50),
