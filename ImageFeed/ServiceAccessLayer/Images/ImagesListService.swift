@@ -7,50 +7,6 @@
 
 import Foundation
 
-struct PhotoResult: Decodable {
-    let id: String
-    let createdAt: String?
-    let welcomeDescription: String?
-    let isLiked: Bool?
-    let urls: ImageUrlsResult?
-    let width: Int?
-    let height: Int?
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case createdAt = "created_at"
-        case welcomeDescription = "description"
-        case isLiked = "liked_by_user"
-        case urls = "urls"
-        case width = "width"
-        case height = "height"
-    }
-}
-
-struct ImageUrlsResult: Decodable {
-    let thumbImageURL: String?
-    let largeImageURL: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case thumbImageURL = "thumb"
-        case largeImageURL = "full"
-    }
-}
-
-struct LikePhotoResult: Decodable {
-    let photo: PhotoResult?
-}
-
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String?
-    let largeImageURL: String?
-    let isLiked: Bool
-}
-
 extension Array {
     func withReplaced(itemAt: Int, newValue: Photo) -> [Photo] {
         var photos = ImagesListService.shared.photos
@@ -67,6 +23,12 @@ final class ImagesListService {
     private let perPage = "10"
     private var task: URLSessionTask?
     
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        return formatter
+    }()
+    
     func updatePhotos(_ photos: [Photo]) {
         self.photos = photos
     }
@@ -77,7 +39,7 @@ extension ImagesListService {
     func fetchPhotosNextPage() {
         //Логика для предотвращения гонки
         assert(Thread.isMainThread)
-        task?.cancel()
+        guard task == nil else { return }
         
         let page = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
         guard let token = OAuth2TokenStorage().token else { return }
@@ -101,8 +63,8 @@ extension ImagesListService {
                             name: ImagesListService.didChangeNotification,
                             object: self,
                             userInfo: ["Images" : self.photos])
-                case .failure(_):
-                    break
+                case .failure(let error):
+                    assertionFailure("Ошибка получения изображений \(error)")
                 }
             }
         }
@@ -111,11 +73,8 @@ extension ImagesListService {
     }
     
     private func convert(_ photoResult: PhotoResult) -> Photo {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+       
         let date = dateFormatter.date(from:photoResult.createdAt ?? "")
-        
         return Photo.init(id: photoResult.id,
                           size: CGSize(width: photoResult.width ?? 0, height: photoResult.height ?? 0),
                           createdAt: date,

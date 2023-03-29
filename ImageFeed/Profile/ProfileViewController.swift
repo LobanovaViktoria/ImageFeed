@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 import WebKit
 
-final class ProfileViewController:UIViewController {
+final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     
@@ -126,7 +126,8 @@ final class ProfileViewController:UIViewController {
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
+            guard let self = self else { return }
             self.logout()
         }))
         alertController.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))

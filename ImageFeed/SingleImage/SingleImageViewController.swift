@@ -11,14 +11,15 @@ import Kingfisher
 final class SingleImageViewController: UIViewController {
     
     var imageURL: URL?
-    lazy var imageView: UIImageView = {
+    
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    lazy var scrollView: UIScrollView = {
-       let scrollView = UIScrollView()
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
         scrollView.backgroundColor = .ypWhite
         scrollView.frame = view.bounds
         scrollView.contentSize = contentSize
@@ -43,6 +44,10 @@ final class SingleImageViewController: UIViewController {
     private lazy var shareButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "sharing"), for: .normal)
+        button.addTarget(
+            self,
+            action:  #selector(Self.didTapShareButton),
+            for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -56,14 +61,20 @@ final class SingleImageViewController: UIViewController {
         setupLayout()
         loadImageView()
     }
-
+    
     @objc
     private func didTapBackButtonSingleImage() {
-     dismiss(animated: true)
+        dismiss(animated: true)
     }
     
     @objc
     private func didTapShareButton() {
+        guard let image = imageView.image else { return }
+        let share = UIActivityViewController(
+            activityItems: [image],
+            applicationActivities: nil
+        )
+        present(share, animated: true, completion: nil)
     }
     
     private func addSubviews() {
@@ -121,7 +132,8 @@ final class SingleImageViewController: UIViewController {
             message: "Попробовать еще раз?",
             preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Не надо", style: .default, handler: nil))
-        alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { [weak self] action in
+            guard let self = self else { return }
             self.loadImageView()
         }))
         present(alertController, animated: true, completion: nil)
