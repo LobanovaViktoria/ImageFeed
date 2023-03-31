@@ -20,7 +20,7 @@ final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
     
-    @IBAction func likeOrDislikeButtonTapped(_ sender: Any) {
+    @IBAction private func likeOrDislikeButtonTapped(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
     

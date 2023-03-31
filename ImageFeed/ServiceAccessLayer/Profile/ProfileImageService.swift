@@ -24,6 +24,12 @@ final class ProfileImageService {
     static let shared = ProfileImageService()
     private (set) var avatarURL: String?
     private var task: URLSessionTask?
+    
+    func clean() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
+    }
 }
 
 extension ProfileImageService {
@@ -61,11 +67,10 @@ extension ProfileImageService {
     }
     
     private func fetchProfileImageRequest(_ token: String, username: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var request = URLRequest.makeHTTPRequest(
             path: "/users/\(username)",
             httpMethod: "GET",
-            baseURL: url)
+            baseURL: defaultBaseURL)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

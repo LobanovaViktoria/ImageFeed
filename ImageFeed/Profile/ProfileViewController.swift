@@ -99,6 +99,7 @@ final class ProfileViewController: UIViewController {
     private func logout() {
         OAuth2TokenStorage().token = nil
         ProfileViewController.clean()
+        cleanServicesData()
         switchToSplashViewController()
     }
     
@@ -114,9 +115,16 @@ final class ProfileViewController: UIViewController {
         }
     }
     
+    private func cleanServicesData() {
+        ImagesListService.shared.clean()
+        ProfileService.shared.clean()
+        ProfileImageService.shared.clean()
+    }
+    
     private func switchToSplashViewController() {
         guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid Configuration")
+            assertionFailure("Invalid Configuration")
+            return
         }
         window.rootViewController = SplashViewController()
     }

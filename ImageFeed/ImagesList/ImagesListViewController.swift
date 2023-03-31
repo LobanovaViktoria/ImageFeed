@@ -62,8 +62,11 @@ final class ImagesListViewController: UIViewController {
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
             
-            cell.dateLabel.text = dateFormatter.string(from: imagesListService.photos[indexPath.row].createdAt ?? Date())
-            
+            if let date = imagesListService.photos[indexPath.row].createdAt {
+                cell.dateLabel.text = dateFormatter.string(from: date)
+            } else {
+                cell.dateLabel.text = ""
+            }
             let isLiked = imagesListService.photos[indexPath.row].isLiked == false
             let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "yesActive")
             cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
@@ -147,7 +150,8 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         // Покажем лоадер
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { result in
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case.success:
                 // Синхронизируем массив картинок с сервисом

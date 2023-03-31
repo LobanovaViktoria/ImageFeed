@@ -7,14 +7,6 @@
 
 import Foundation
 
-extension Array {
-    func withReplaced(itemAt: Int, newValue: Photo) -> [Photo] {
-        var photos = ImagesListService.shared.photos
-        photos.replaceSubrange(itemAt...itemAt, with: [newValue])
-        return photos
-    }
-}
-
 final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     static let shared = ImagesListService()
@@ -23,14 +15,17 @@ final class ImagesListService {
     private let perPage = "10"
     private var task: URLSessionTask?
     
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        return formatter
-    }()
+    private let dateFormatter = ISO8601DateFormatter()
     
     func updatePhotos(_ photos: [Photo]) {
         self.photos = photos
+    }
+    
+    func clean() {
+        photos = []
+        lastLoadedPage = nil
+        task?.cancel()
+        task = nil
     }
 }
 
@@ -49,7 +44,7 @@ extension ImagesListService {
         //создание URLSessionDataTask на получение картинок с unsplash.com
         
         let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.task = nil
                 switch result {
@@ -85,11 +80,10 @@ extension ImagesListService {
     }
     
     private func fetchImagesListRequest(_ token: String, page: String, perPage: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
-            baseURL: url)
+            baseURL: defaultBaseURL)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -145,22 +139,20 @@ extension ImagesListService {
     
     private func postLikeRequest(_ token: String, photoId: String) -> URLRequest? {
         //POST /photos/:id/like
-        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var requestPost = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: "POST",
-            baseURL: url)
+            baseURL: defaultBaseURL)
         requestPost?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return requestPost
     }
     
     private func deleteLikeRequest(_ token: String, photoId: String) -> URLRequest? {
         //DELETE /photos/:id/like
-        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var requestDelete = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: "DELETE",
-            baseURL: url)
+            baseURL: defaultBaseURL)
         requestDelete?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return requestDelete
     }

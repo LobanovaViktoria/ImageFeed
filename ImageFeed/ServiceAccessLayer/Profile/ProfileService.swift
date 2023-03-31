@@ -33,6 +33,12 @@ final class ProfileService {
     static let shared = ProfileService()
     private (set) var profile: Profile?
     private var task: URLSessionTask?
+    
+    func clean() {
+        profile = nil
+        task?.cancel()
+        task = nil
+    }
 }
 
 extension ProfileService {
@@ -66,11 +72,10 @@ extension ProfileService {
     }
     
     private func fetchProfileRequest(_ token: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var request = URLRequest.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
-            baseURL: url)
+            baseURL: defaultBaseURL)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
