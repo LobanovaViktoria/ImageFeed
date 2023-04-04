@@ -58,6 +58,8 @@ extension ProfileImageService {
                         name: ProfileImageService.didChangeNotification,
                         object: self,
                         userInfo: ["URL" : self.avatarURL ?? ""])
+                ProfileViewController().gradient.removeFromSuperlayer()
+           
             case .failure(let error):
                 completion(.failure(error))
             }
