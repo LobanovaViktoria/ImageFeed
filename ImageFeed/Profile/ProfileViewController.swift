@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     
@@ -63,14 +64,14 @@ final class ProfileViewController: UIViewController {
         updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.DidChangeNotification,
-                         object: nil,
-                         queue: .main
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
                 self.updateAvatar()
             }
-        
     }
     
     private func updateAvatar() {
@@ -84,17 +85,61 @@ final class ProfileViewController: UIViewController {
         imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
-    
     private func updateProfileDetails() {
         userName.text = profileService.profile?.name
         userLogin.text = profileService.profile?.loginName
         userStatus.text = profileService.profile?.bio
-        
     }
     
     @objc
     private func didTapLogoutButton() {
+        showAlert()
+    }
+    
+    private func logout() {
         OAuth2TokenStorage().token = nil
+        ProfileViewController.clean()
+        cleanServicesData()
+        switchToSplashViewController()
+    }
+    
+    static func clean() {
+        // Очищаем все куки из хранилища
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        // Запрашиваем все данные из локального хранилища
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            // Массив полученных записей удаляем из хранилища
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+    }
+    
+    private func cleanServicesData() {
+        ImagesListService.shared.clean()
+        ProfileService.shared.clean()
+        ProfileImageService.shared.clean()
+    }
+    
+    private func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+        window.rootViewController = SplashViewController()
+    }
+    
+    private func showAlert() {
+        let alertController = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
+            guard let self = self else { return }
+            self.logout()
+        }))
+        alertController.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
     
     private func addSubviews() {

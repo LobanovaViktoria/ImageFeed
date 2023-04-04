@@ -20,10 +20,16 @@ struct ImageURL: Decodable {
 }
 
 final class ProfileImageService {
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
     private (set) var avatarURL: String?
     private var task: URLSessionTask?
+    
+    func clean() {
+        avatarURL = nil
+        task?.cancel()
+        task = nil
+    }
 }
 
 extension ProfileImageService {
@@ -46,9 +52,12 @@ extension ProfileImageService {
             switch result {
             case .success(let userResult):
                 self.avatarURL = userResult.profileImage?.small
-                NotificationCenter.default
-                    .post(name: ProfileImageService.DidChangeNotification, object: self, userInfo: ["URL" : self.avatarURL ?? ""])
                 completion(.success(self.avatarURL))
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL" : self.avatarURL ?? ""])
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -58,11 +67,10 @@ extension ProfileImageService {
     }
     
     private func fetchProfileImageRequest(_ token: String, username: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com") else { return nil }
         var request = URLRequest.makeHTTPRequest(
             path: "/users/\(username)",
             httpMethod: "GET",
-            baseURL: url)
+            baseURL: defaultBaseURL)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

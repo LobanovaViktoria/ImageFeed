@@ -14,6 +14,7 @@ final class SplashViewController: UIViewController {
     private let oauth2TokenStorage = OAuth2TokenStorage()
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
+    private let imagesListService = ImagesListService.shared
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -42,6 +43,7 @@ final class SplashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+        view.backgroundColor = .ypBlack
         addSubviews()
         setupLayout()
     }
@@ -87,7 +89,6 @@ extension SplashViewController {
         view.addSubview(imageView)
     }
 }
-
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {

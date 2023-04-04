@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="k6l-jZ-muW">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -31,11 +31,12 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="NAM-jd-CWl"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="tintColor" name="ypBlack"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Войти">
-                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="17"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Войти">
+                                    <color key="titleColor" name="ypBlack"/>
+                                </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.MasksToBounds" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
@@ -143,7 +144,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="cfr-mN-UiM">
                                                     <rect key="frame" x="16" y="4" width="361" height="141"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="imageCell"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="cellImageView"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -152,8 +153,8 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KQT-dh-kPC">
-                                                    <rect key="frame" x="24" y="121" width="102" height="16"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="dateCell"/>
+                                                    <rect key="frame" x="24.000000000000007" y="121.33333333333333" width="101.66666666666669" height="15.666666666666671"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="dateLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -164,6 +165,9 @@
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="yesActive"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="yesActive"/>
+                                                    <connections>
+                                                        <action selector="likeOrDislikeButtonTapped:" destination="xWC-TY-d3C" eventType="touchUpInside" id="2Db-h9-50L"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -181,8 +185,8 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="dateCell" destination="KQT-dh-kPC" id="Xlz-Ni-aCr"/>
-                                            <outlet property="imageCell" destination="cfr-mN-UiM" id="NIF-9l-0Mk"/>
+                                            <outlet property="cellImageView" destination="cfr-mN-UiM" id="NIF-9l-0Mk"/>
+                                            <outlet property="dateLabel" destination="KQT-dh-kPC" id="Xlz-Ni-aCr"/>
                                             <outlet property="likeOrDislakeButton" destination="Q3W-tA-jhH" id="ash-TB-L8l"/>
                                         </connections>
                                     </tableViewCell>
@@ -206,7 +210,6 @@
                     <navigationItem key="navigationItem" id="1SS-g6-ejV"/>
                     <connections>
                         <outlet property="tableView" destination="pIs-yH-CVm" id="MaD-W2-43O"/>
-                        <segue destination="yLy-bD-Y9L" kind="presentation" identifier="ShowSingleImage" id="dw9-RW-GdG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -231,81 +234,6 @@
             </objects>
             <point key="canvasLocation" x="-1303" y="-823"/>
         </scene>
-        <!--Single Image View Controller-->
-        <scene sceneID="NXy-OU-1Gp">
-            <objects>
-                <viewController modalPresentationStyle="fullScreen" id="yLy-bD-Y9L" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="iG4-Ce-wgE">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH1-yA-GXe">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="5R2-Op-0EV">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="132"/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="5R2-Op-0EV" secondAttribute="bottom" id="Pch-rC-NXh"/>
-                                    <constraint firstAttribute="trailing" secondItem="5R2-Op-0EV" secondAttribute="trailing" id="X51-1S-BSZ"/>
-                                    <constraint firstItem="5R2-Op-0EV" firstAttribute="top" secondItem="cH1-yA-GXe" secondAttribute="top" id="jfK-tb-QqJ"/>
-                                    <constraint firstItem="5R2-Op-0EV" firstAttribute="leading" secondItem="cH1-yA-GXe" secondAttribute="leading" id="udt-Qj-SJz"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="6iB-LB-Eov"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="bdb-3a-CYM"/>
-                                <connections>
-                                    <outlet property="delegate" destination="yLy-bD-Y9L" id="Qur-fm-ebV"/>
-                                </connections>
-                            </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yHB-a3-lEX">
-                                <rect key="frame" x="171.66666666666666" y="732" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="SZr-ME-y2R"/>
-                                    <constraint firstAttribute="width" constant="50" id="WYY-sz-6Pq"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="sharing"/>
-                                <connections>
-                                    <action selector="didTapShareButton:" destination="yLy-bD-Y9L" eventType="touchUpInside" id="UGq-jc-Kby"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8qr-ah-USG">
-                                <rect key="frame" x="8" y="67" width="48" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="Hts-DJ-0Jn"/>
-                                    <constraint firstAttribute="height" constant="48" id="XUL-nh-tky"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="nav_back_button"/>
-                                <connections>
-                                    <action selector="didTapBackButton" destination="yLy-bD-Y9L" eventType="touchUpInside" id="Q9t-CP-YhH"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="STk-XM-83J"/>
-                        <color key="backgroundColor" name="ypBlack"/>
-                        <constraints>
-                            <constraint firstItem="8qr-ah-USG" firstAttribute="leading" secondItem="STk-XM-83J" secondAttribute="leading" constant="8" id="2Jo-ni-C17"/>
-                            <constraint firstItem="cH1-yA-GXe" firstAttribute="bottom" secondItem="iG4-Ce-wgE" secondAttribute="bottom" id="5VN-kk-2P1"/>
-                            <constraint firstItem="STk-XM-83J" firstAttribute="bottom" secondItem="yHB-a3-lEX" secondAttribute="bottom" constant="36" id="MjE-oY-rZH"/>
-                            <constraint firstAttribute="trailing" secondItem="cH1-yA-GXe" secondAttribute="trailing" id="f7A-NH-fYb"/>
-                            <constraint firstItem="cH1-yA-GXe" firstAttribute="leading" secondItem="iG4-Ce-wgE" secondAttribute="leading" id="fgr-3E-jIg"/>
-                            <constraint firstItem="8qr-ah-USG" firstAttribute="top" secondItem="STk-XM-83J" secondAttribute="top" constant="8" id="gnd-V7-oxv"/>
-                            <constraint firstItem="yHB-a3-lEX" firstAttribute="centerX" secondItem="STk-XM-83J" secondAttribute="centerX" id="jIy-be-xGu"/>
-                            <constraint firstAttribute="top" secondItem="cH1-yA-GXe" secondAttribute="top" id="uCG-6b-IlD"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="DmE-Ov-qW7"/>
-                    <connections>
-                        <outlet property="imageView" destination="5R2-Op-0EV" id="0Gl-M7-HLI"/>
-                        <outlet property="scrollView" destination="cH1-yA-GXe" id="lIb-xn-OXG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7YG-q8-Bwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="440" y="-844"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Cp2-vD-EQt">
             <objects>
@@ -329,9 +257,7 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="auth_screen_logo" width="60" height="60"/>
-        <image name="nav_back_button" width="24" height="24"/>
         <image name="nav_back_button_black" width="24" height="24"/>
-        <image name="sharing" width="50" height="50"/>
         <image name="tab_editorial_active" width="20" height="22"/>
         <image name="yesActive" width="29" height="26"/>
         <namedColor name="ypBlack">
