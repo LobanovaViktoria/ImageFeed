@@ -70,7 +70,7 @@ extension ProfileImageService {
         var request = URLRequest.makeHTTPRequest(
             path: "/users/\(username)",
             httpMethod: "GET",
-            baseURL: defaultBaseURL)
+            baseURL: AuthConfiguration.standart.defaultBaseURL)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
