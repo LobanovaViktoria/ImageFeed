@@ -14,11 +14,6 @@ public protocol WebViewPresenterProtocol {
     func code(from url: URL) -> String?
 }
 
-//private struct APIConstants {
-//    static let authorizeURLString = "https://unsplash.com/oauth/authorize"
-//    static let code = "code"
-//}
-
 final class WebViewPresenter: WebViewPresenterProtocol {
     
     weak var view: WebViewViewControllerProtocol?

@@ -7,7 +7,13 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? { get set }
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+    
+    var presenter: ImagesListViewPresenterProtocol?
     
     @IBOutlet private var tableView: UITableView!
     
@@ -35,6 +41,11 @@ final class ImagesListViewController: UIViewController {
             self.updateTableViewAnimated()
         }
         imagesListService.fetchPhotosNextPage()
+    }
+    
+    func configure(_ presenter: ImagesListViewPresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
     }
     
     private func updateTableViewAnimated() {

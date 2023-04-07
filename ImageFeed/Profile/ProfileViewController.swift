@@ -7,17 +7,26 @@
 
 import UIKit
 import Kingfisher
-import WebKit
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    func switchToSplashViewController()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    
+    var presenter: ProfileViewPresenterProtocol?
     
     private let profileService = ProfileService.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        let processor = RoundCornerImageProcessor(cornerRadius: 35, backgroundColor: .clear)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: presenter?.avatarURL(), placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
         return imageView
     }()
     
@@ -56,10 +65,16 @@ final class ProfileViewController: UIViewController {
         return button
     }()
     
+    func configure(_ presenter: ProfileViewPresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
         setupLayout()
+        view.backgroundColor = .ypBlack
         updateAvatar()
         updateProfileDetails()
         
@@ -69,20 +84,15 @@ final class ProfileViewController: UIViewController {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
+                guard self != nil else { return }
+                self?.updateAvatar()
             }
     }
     
-    private func updateAvatar() {
-        view.backgroundColor = .ypBlack
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func updateAvatar() {
         let processor = RoundCornerImageProcessor(cornerRadius: 35, backgroundColor: .clear)
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
+        imageView.kf.setImage(with: presenter?.avatarURL(), placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
     private func updateProfileDetails() {
@@ -95,33 +105,8 @@ final class ProfileViewController: UIViewController {
     private func didTapLogoutButton() {
         showAlert()
     }
-    
-    private func logout() {
-        OAuth2TokenStorage().token = nil
-        ProfileViewController.clean()
-        cleanServicesData()
-        switchToSplashViewController()
-    }
-    
-    static func clean() {
-        // Очищаем все куки из хранилища
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        // Запрашиваем все данные из локального хранилища
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            // Массив полученных записей удаляем из хранилища
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
-    }
-    
-    private func cleanServicesData() {
-        ImagesListService.shared.clean()
-        ProfileService.shared.clean()
-        ProfileImageService.shared.clean()
-    }
-    
-    private func switchToSplashViewController() {
+ 
+    func switchToSplashViewController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid Configuration")
             return
@@ -136,7 +121,7 @@ final class ProfileViewController: UIViewController {
             preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
             guard let self = self else { return }
-            self.logout()
+            self.presenter?.logout()
         }))
         alertController.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
         present(alertController, animated: true, completion: nil)

@@ -8,11 +8,6 @@
 import UIKit
 import WebKit
 
-//private struct APIConstants {
-//    static let authorizeURLString = "https://unsplash.com/oauth/authorize"
-//    static let code = "code"
-//}
-
 public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     func load(request: URLRequest)
