@@ -12,6 +12,7 @@ import WebKit
 public protocol ProfileViewPresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     func avatarURL() -> URL?
+    func updateProfileDetails() -> [String]?
     func logout()
     static func clean()
 }
@@ -25,6 +26,15 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             let url = URL(string: profileImageURL)
         else { return nil }
         return url
+    }
+    
+    func updateProfileDetails() -> [String]? {
+        guard let userName = ProfileService.shared.profile?.name,
+              let userLogin = ProfileService.shared.profile?.loginName,
+              let userStatus = ProfileService.shared.profile?.bio
+        else { return nil }
+        
+        return [userName, userLogin, userStatus]
     }
     
     func logout() {

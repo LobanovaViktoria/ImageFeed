@@ -60,6 +60,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             target: self,
             action: #selector(Self.didTapLogoutButton)
         )
+        button.accessibilityIdentifier = "logoutButton"
         button.tintColor = .ypRed
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -96,9 +97,11 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     }
     
     private func updateProfileDetails() {
-        userName.text = profileService.profile?.name
-        userLogin.text = profileService.profile?.loginName
-        userStatus.text = profileService.profile?.bio
+        var profileDetails: [String]?
+        profileDetails = presenter?.updateProfileDetails()
+        userName.text = profileDetails?[0]
+        userLogin.text = profileDetails?[1]
+        userStatus.text = profileDetails?[2]
     }
     
     @objc

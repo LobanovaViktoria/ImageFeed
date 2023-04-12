@@ -32,6 +32,6 @@ final class ProfileViewTests: XCTestCase {
         presenter.logout()
         
         //then
-        XCTAssertEqual(OAuth2TokenStorage().token, nil)
+        XCTAssertNil(OAuth2TokenStorage().token)
     }
 }

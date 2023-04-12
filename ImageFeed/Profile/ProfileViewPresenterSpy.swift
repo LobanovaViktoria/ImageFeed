@@ -10,6 +10,10 @@ import Foundation
 import WebKit
 
 final class ProfileViewPresenterSpy: ProfileViewPresenterProtocol {
+    func updateProfileDetails() -> [String]? {
+        return nil
+    }
+    
     weak var view: ProfileViewControllerProtocol?
     var logoutCalled: Bool = false
     

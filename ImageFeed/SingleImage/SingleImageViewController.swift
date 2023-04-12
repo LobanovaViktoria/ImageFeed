@@ -36,6 +36,7 @@ final class SingleImageViewController: UIViewController {
             target: self,
             action: #selector(Self.didTapBackButtonSingleImage)
         )
+        button.accessibilityIdentifier = "backButton"
         button.tintColor = .ypWhite
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
