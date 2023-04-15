@@ -70,9 +70,9 @@ extension OAuth2Service {
         guard let url = URL(string: "https://unsplash.com") else { return nil }
         return URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(accessKey)"
-            + "&&client_secret=\(secretKey)"
-            + "&&redirect_uri=\(redirectURI)"
+            + "?client_id=\(AuthConfiguration.standart.accessKey)"
+            + "&&client_secret=\(AuthConfiguration.standart.secretKey)"
+            + "&&redirect_uri=\(AuthConfiguration.standart.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
