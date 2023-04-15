@@ -39,3 +39,4 @@ final class ImageFeedUITests: XCTestCase {
         }
     }
 }
+
