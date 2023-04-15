@@ -51,6 +51,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         progressView.progressTintColor = .ypBlack
         webView.navigationDelegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.accessibilityIdentifier = "UnsplashWebView"
         progressView.translatesAutoresizingMaskIntoConstraints = false
         
         estimatedProgressObservation = webView.observe(

@@ -8,7 +8,7 @@
 import XCTest
 @testable import ImageFeed
 
-final class ImageFeedTests: XCTestCase {
+final class WebViewTests: XCTestCase {
 
     func testViewControllerCallsViewDidLoad() {
         //given
@@ -37,5 +37,62 @@ final class ImageFeedTests: XCTestCase {
         
         //then
         XCTAssertTrue(viewController.loadRequestCalled) //behaviour verification
+    }
+    
+    func testProgressVisibleWhenLessThenOne() {
+        //given
+        let authHelper = AuthHelper()
+        let presenter = WebViewPresenter(authHelper: authHelper)
+        let progress: Float = 0.6
+        
+        //when
+        let shouldHideProgress = presenter.shouldHideProgress(for: progress)
+        
+        //then
+        XCTAssertFalse(shouldHideProgress)
+    }
+    
+    func testProgressHiddenWhenOne() {
+        //given
+        let authHelper = AuthHelper() //Dummy
+        let presenter = WebViewPresenter(authHelper: authHelper)
+        let progress: Float = 1.0
+        
+        //when
+        let shouldHideProgress = presenter.shouldHideProgress(for: progress)
+        
+        //then
+        XCTAssertTrue(shouldHideProgress)
+    }
+    
+    func testAuthHelperAuthURL() {
+        //given
+        let configuration = AuthConfiguration.standart
+        let authHelper = AuthHelper(configuration: configuration)
+        
+        //when
+        guard let url = authHelper.authURL() else { return }
+        let urlString = url.absoluteString
+        
+        //then
+        XCTAssertTrue(urlString.contains(configuration.authURLString))
+        XCTAssertTrue(urlString.contains(configuration.accessKey))
+        XCTAssertTrue(urlString.contains(configuration.redirectURI))
+        XCTAssertTrue(urlString.contains("code"))
+        XCTAssertTrue(urlString.contains(configuration.accessScope))
+    }
+    
+    func testCodeFroURL() {
+        //given
+        var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize/native")
+        urlComponents?.queryItems = [URLQueryItem(name: "code", value: "test code")]
+        guard let url = urlComponents?.url else { return }
+        let authHelper = AuthHelper()
+        
+        //when
+        let code = authHelper.code(from: url)
+        
+        //then
+        XCTAssertEqual(code, "test code")
     }
 }

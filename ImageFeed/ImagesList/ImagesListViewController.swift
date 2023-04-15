@@ -7,8 +7,14 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol? { get set }
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
     
+    var presenter: ImagesListPresenterProtocol?
+
     @IBOutlet private var tableView: UITableView!
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -35,6 +41,11 @@ final class ImagesListViewController: UIViewController {
             self.updateTableViewAnimated()
         }
         imagesListService.fetchPhotosNextPage()
+    }
+    
+    func configure(_ presenter: ImagesListPresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
     }
     
     private func updateTableViewAnimated() {
