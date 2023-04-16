@@ -43,7 +43,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         view?.switchToSplashViewController()
     }
     
-    func cleanServicesData() {
+    private func cleanServicesData() {
         ImagesListService.shared.clean()
         ProfileService.shared.clean()
         ProfileImageService.shared.clean()

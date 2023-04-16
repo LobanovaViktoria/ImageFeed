@@ -9,22 +9,11 @@ import XCTest
 @testable import ImageFeed
 
 final class ProfileUnitTests: XCTestCase {
-    func testProfileViewCallsLogout() {
-        //given
-        let viewController = ProfileViewController()
-        let presenter = ProfilePresenterSpy()
-        viewController.configure(presenter)
-        
-        //when
-        viewController.showAlert()
-        //then
-        XCTAssertTrue(presenter.logoutCalled)
-    }
-    
+   
     func testProfileViewLogoutTokenIsEqualNil() {
         //given
-        let viewController = ProfileViewControllerSpy()
-        let presenter = ProfilePresenterSpy()
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenter()
         viewController.configure(presenter)
         
         //when
@@ -32,5 +21,66 @@ final class ProfileUnitTests: XCTestCase {
         
         //then
         XCTAssertEqual(OAuth2TokenStorage().token, nil)
+    }
+    
+    func testProfilePresenterCallsAvatarURL() {
+        //given
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenterSpy()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        //when
+        viewController.viewDidLoad()
+        
+        //then
+        XCTAssertTrue(presenter.avatarURLCalled) //behaviour verification
+    }
+    
+    func testProfilePresenterCallsUpdateProfileDetails() {
+        //given
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenterSpy()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        //when
+        viewController.viewDidLoad()
+        
+        //then
+        XCTAssertTrue(presenter.updateProfileDetailsCalled) //behaviour verification
+    }
+    
+    func testProfilePresenterCleanServicesData() {
+        //given
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenterSpy()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        //when
+        presenter.logout()
+        
+        //then
+        XCTAssertTrue(presenter.cleanServicesDataCalled) //behaviour verification
+    }
+    
+    func testProfilePresenterChangedViewControllerAfterLogout() {
+        //given
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenter()
+        viewController.presenter = presenter
+        presenter.view = viewController
+        
+        //when
+        presenter.logout()
+        
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+        
+        //then
+        XCTAssertTrue(window.rootViewController?.isKind(of: SplashViewController.self) == true) //behaviour verification
     }
 }

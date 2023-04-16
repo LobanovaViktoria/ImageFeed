@@ -12,6 +12,7 @@ final class WebViewPresenterSpy: WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol?
     var viewDidLoadCalled: Bool = false
     
+    
     func viewDidLoad() {
         viewDidLoadCalled = true
     }
