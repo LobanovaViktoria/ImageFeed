@@ -113,19 +113,10 @@ extension ImagesListService {
                 let isLiked = photoResult.photo?.isLiked ?? false
                 if let index = self.photos.firstIndex(where: { $0.id == photoResult.photo?.id }) {
                     // Текущий элемент
-                    let photo = self.photos[index]
-                    // Копия элемента с инвертированным значением isLiked
-                    let newPhoto = Photo(
-                        id: photo.id,
-                        size: photo.size,
-                        createdAt: photo.createdAt,
-                        welcomeDescription: photo.welcomeDescription,
-                        thumbImageURL: photo.thumbImageURL,
-                        largeImageURL: photo.largeImageURL,
-                        isLiked: isLiked
-                    )
+                    var photo = self.photos[index]
+                    photo.isLiked = isLiked
                     // Заменяем элемент в массиве
-                    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                    self.photos = self.photos.withReplaced(itemAt: index, newValue: photo)
                 }
                 print("isLiked = \(String(describing: isLiked))")
                 completion(.success(()))

@@ -22,7 +22,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     
     func avatarURL() -> URL? {
         guard let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
+              let url = URL(string: profileImageURL)
         else { return nil }
         return url
     }
@@ -42,12 +42,11 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         cleanServicesData()
         view?.switchToSplashViewController()
     }
-  
+    
     func cleanServicesData() {
         ImagesListService.shared.clean()
         ProfileService.shared.clean()
         ProfileImageService.shared.clean()
-        
     }
     
     static func clean() {
@@ -60,6 +59,5 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                 WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
             }
         }
-    }
-    
+    }    
 }

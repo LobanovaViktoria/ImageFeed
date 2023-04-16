@@ -9,14 +9,14 @@ import UIKit
 import Kingfisher
 
 public protocol ProfileViewControllerProtocol: AnyObject {
-   var presenter: ProfilePresenterProtocol? { get set }
+    var presenter: ProfilePresenterProtocol? { get set }
     func switchToSplashViewController()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
-
+    
     var presenter: ProfilePresenterProtocol?
-
+    
     private let profileService = ProfileService.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -27,7 +27,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         let processor = RoundCornerImageProcessor(cornerRadius: 35, backgroundColor: .clear)
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: presenter?.avatarURL(), placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
-
+        
         return imageView
     }()
     
@@ -103,7 +103,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         userName.text = profileDetails?[0]
         userLogin.text = profileDetails?[1]
         userStatus.text = profileDetails?[2]
-
     }
     
     @objc
@@ -134,7 +133,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         alertController.view.accessibilityIdentifier = "Bye bye!"
         
         present(alertController, animated: true, completion: nil)
-       
+        
     }
     
     private func addSubviews() {
