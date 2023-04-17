@@ -83,7 +83,7 @@ extension ImagesListService {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos?page=\(page)&&per_page=\(perPage)",
             httpMethod: "GET",
-            baseURL: defaultBaseURL)
+            baseURL: AuthConfiguration.standart.defaultBaseURL)
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -113,19 +113,10 @@ extension ImagesListService {
                 let isLiked = photoResult.photo?.isLiked ?? false
                 if let index = self.photos.firstIndex(where: { $0.id == photoResult.photo?.id }) {
                     // Текущий элемент
-                    let photo = self.photos[index]
-                    // Копия элемента с инвертированным значением isLiked
-                    let newPhoto = Photo(
-                        id: photo.id,
-                        size: photo.size,
-                        createdAt: photo.createdAt,
-                        welcomeDescription: photo.welcomeDescription,
-                        thumbImageURL: photo.thumbImageURL,
-                        largeImageURL: photo.largeImageURL,
-                        isLiked: isLiked
-                    )
+                    var photo = self.photos[index]
+                    photo.isLiked = isLiked
                     // Заменяем элемент в массиве
-                    self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+                    self.photos = self.photos.withReplaced(itemAt: index, newValue: photo)
                 }
                 print("isLiked = \(String(describing: isLiked))")
                 completion(.success(()))
@@ -142,7 +133,7 @@ extension ImagesListService {
         var requestPost = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: "POST",
-            baseURL: defaultBaseURL)
+            baseURL: AuthConfiguration.standart.defaultBaseURL)
         requestPost?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return requestPost
     }
@@ -152,7 +143,7 @@ extension ImagesListService {
         var requestDelete = URLRequest.makeHTTPRequest(
             path: "photos/\(photoId)/like",
             httpMethod: "DELETE",
-            baseURL: defaultBaseURL)
+            baseURL: AuthConfiguration.standart.defaultBaseURL)
         requestDelete?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return requestDelete
     }

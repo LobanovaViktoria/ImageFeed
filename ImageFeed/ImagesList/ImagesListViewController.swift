@@ -7,17 +7,15 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol? { get set }
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
     
+    var presenter: ImagesListPresenterProtocol?
+
     @IBOutlet private var tableView: UITableView!
-    
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
     
     private var photos: [Photo] = []
     private let imagesListService = ImagesListService.shared
@@ -37,6 +35,11 @@ final class ImagesListViewController: UIViewController {
         imagesListService.fetchPhotosNextPage()
     }
     
+    func configure(_ presenter: ImagesListPresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
+    }
+    
     private func updateTableViewAnimated() {
         let oldCount = photos.count
         let newCount = imagesListService.photos.count
@@ -53,7 +56,7 @@ final class ImagesListViewController: UIViewController {
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        if let urlString = imagesListService.photos[indexPath.row].thumbImageURL,
+        if let urlString = photos[indexPath.row].thumbImageURL,
            let imagesURL = URL(string: urlString) {
             cell.cellImageView.kf.indicatorType = .activity
             cell.cellImageView.kf.setImage(with: imagesURL,
@@ -62,12 +65,12 @@ final class ImagesListViewController: UIViewController {
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
             
-            if let date = imagesListService.photos[indexPath.row].createdAt {
-                cell.dateLabel.text = dateFormatter.string(from: date)
+            if let date = photos[indexPath.row].createdAt {
+                cell.dateLabel.text = presenter?.dateString(date)
             } else {
                 cell.dateLabel.text = ""
             }
-            let isLiked = imagesListService.photos[indexPath.row].isLiked == false
+            let isLiked = photos[indexPath.row].isLiked == false
             let likeImage = isLiked ? UIImage(named: "noActive") : UIImage(named: "yesActive")
             cell.likeOrDislakeButton.setImage(likeImage, for: .normal)
             cell.selectionStyle = .none
@@ -82,7 +85,7 @@ extension ImagesListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let viewController = SingleImageViewController()
         
-        if let urlFullString = imagesListService.photos[indexPath.row].largeImageURL,
+        if let urlFullString = photos[indexPath.row].largeImageURL,
            let imageFullURL = URL(string: urlFullString) {
             viewController.imageURL = imageFullURL
         }
@@ -92,8 +95,8 @@ extension ImagesListViewController: UITableViewDelegate {
     
     // Метод, который вычисляет высоту ячейки
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let imagesHeight = imagesListService.photos[indexPath.row].size.height
-        let imagesWidth = imagesListService.photos[indexPath.row].size.width
+        let imagesHeight = photos[indexPath.row].size.height
+        let imagesWidth = photos[indexPath.row].size.width
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let heightForRowAt = imagesHeight * imageViewWidth / imagesWidth + imageInsets.top + imageInsets.bottom
@@ -118,7 +121,7 @@ extension ImagesListViewController: UITableViewDataSource {
     
     // Метод, который определяет количество ячеек в секции таблицы
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return imagesListService.photos.count
+        return photos.count
     }
     
     // Если indexPath соответствует индексу последней строки в таблице, то вызывается fetchPhotosNextPage()

@@ -7,17 +7,27 @@
 
 import UIKit
 import Kingfisher
-import WebKit
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func switchToSplashViewController()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    
+    var presenter: ProfilePresenterProtocol?
     
     private let profileService = ProfileService.shared
     
     private var profileImageServiceObserver: NSObjectProtocol?
     
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        let processor = RoundCornerImageProcessor(cornerRadius: 35, backgroundColor: .clear)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: presenter?.avatarURL(), placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
+        
         return imageView
     }()
     
@@ -53,13 +63,20 @@ final class ProfileViewController: UIViewController {
         )
         button.tintColor = .ypRed
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.accessibilityIdentifier = "logoutButton"
         return button
     }()
+    
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
         setupLayout()
+        view.backgroundColor = .ypBlack
         updateAvatar()
         updateProfileDetails()
         
@@ -74,21 +91,18 @@ final class ProfileViewController: UIViewController {
             }
     }
     
-    private func updateAvatar() {
-        view.backgroundColor = .ypBlack
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func updateAvatar() {
         let processor = RoundCornerImageProcessor(cornerRadius: 35, backgroundColor: .clear)
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
+        imageView.kf.setImage(with: presenter?.avatarURL(), placeholder: UIImage(named: "placeholder"), options: [.processor(processor), .cacheSerializer(FormatIndicatedCacheSerializer.png)])
     }
     
-    private func updateProfileDetails() {
-        userName.text = profileService.profile?.name
-        userLogin.text = profileService.profile?.loginName
-        userStatus.text = profileService.profile?.bio
+    func updateProfileDetails() {
+        var profileDetails: [String]?
+        profileDetails = presenter?.updateProfileDetails()
+        userName.text = profileDetails?[0]
+        userLogin.text = profileDetails?[1]
+        userStatus.text = profileDetails?[2]
     }
     
     @objc
@@ -96,32 +110,7 @@ final class ProfileViewController: UIViewController {
         showAlert()
     }
     
-    private func logout() {
-        OAuth2TokenStorage().token = nil
-        ProfileViewController.clean()
-        cleanServicesData()
-        switchToSplashViewController()
-    }
-    
-    static func clean() {
-        // Очищаем все куки из хранилища
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        // Запрашиваем все данные из локального хранилища
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            // Массив полученных записей удаляем из хранилища
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
-    }
-    
-    private func cleanServicesData() {
-        ImagesListService.shared.clean()
-        ProfileService.shared.clean()
-        ProfileImageService.shared.clean()
-    }
-    
-    private func switchToSplashViewController() {
+    func switchToSplashViewController() {
         guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid Configuration")
             return
@@ -129,17 +118,22 @@ final class ProfileViewController: UIViewController {
         window.rootViewController = SplashViewController()
     }
     
-    private func showAlert() {
+    func showAlert() {
         let alertController = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
+        let action = UIAlertAction(title: "Да", style: .default, handler: { [weak self] action in
             guard let self = self else { return }
-            self.logout()
-        }))
+            self.presenter?.logout()
+        })
+        alertController.addAction(action)
+        action.accessibilityIdentifier = "Yes action"
         alertController.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
+        alertController.view.accessibilityIdentifier = "Bye bye!"
+        
         present(alertController, animated: true, completion: nil)
+        
     }
     
     private func addSubviews() {
