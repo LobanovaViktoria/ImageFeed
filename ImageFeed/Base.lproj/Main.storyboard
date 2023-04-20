@@ -81,6 +81,9 @@
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="UnsplashWebView"/>
+                                </userDefinedRuntimeAttributes>
                             </wkWebView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBh-Bd-uS6">
                                 <rect key="frame" x="9" y="55" width="24" height="24"/>
@@ -101,7 +104,6 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="apt-H4-D4w"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView"/>
                         <constraints>
                             <constraint firstItem="dBh-Bd-uS6" firstAttribute="top" secondItem="JVn-TE-3hh" secondAttribute="top" constant="55" id="32b-WL-0nD"/>
                             <constraint firstItem="lSb-PY-7vN" firstAttribute="top" secondItem="dBh-Bd-uS6" secondAttribute="bottom" id="907-6F-VuM"/>

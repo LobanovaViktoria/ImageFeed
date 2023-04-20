@@ -37,7 +37,7 @@ final class ImageFeedUITests: XCTestCase {
         
         loginTextField.tap()
         loginTextField.typeText("va_klevtsova@mail.ru")
-        webView.swipeUp() //поможет скрыть клавиатуру после ввода текста
+        loginTextField.swipeUp() //поможет скрыть клавиатуру после ввода текста
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         sleep(5)
