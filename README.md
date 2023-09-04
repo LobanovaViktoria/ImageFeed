@@ -2,8 +2,15 @@
 
 # Ссылки
 
-- [Дизайн в Figma](https://tinyurl.com/image-feed-figma)
-- [Unsplash API](https://unsplash.com/documentation)
+Дизайн в Figma - [посмотреть](https://tinyurl.com/image-feed-figma)
+Unsplash API - [посмотреть](https://unsplash.com/documentation)
+Скринкаст работы приложения - [посмотреть](https://disk.yandex.ru/i/ilnZaopw9QOV2A)   
+
+# Изображения
+![Изображение 1](imageFeed1.png)  
+![Изображение 2](imageFeed2.png)  
+![Изображение 3](imageFeed3.png)  
+![Изображение 4](imageFeed4.png)  
 
 # Назначение и цели приложения
 
