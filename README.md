@@ -2,9 +2,9 @@
 
 # Ссылки
 
-Дизайн в Figma - [посмотреть](https://tinyurl.com/image-feed-figma)
-Unsplash API - [посмотреть](https://unsplash.com/documentation)
-Скринкаст работы приложения - [посмотреть](https://disk.yandex.ru/i/ilnZaopw9QOV2A)   
+Дизайн в Figma - [посмотреть](https://tinyurl.com/image-feed-figma)   
+Unsplash API - [посмотреть](https://unsplash.com/documentation)    
+Скринкаст работы приложения - [посмотреть](https://disk.yandex.ru/i/ilnZaopw9QOV2A)     
 
 # Изображения
 ![Изображение 1](imageFeed1.png)  
